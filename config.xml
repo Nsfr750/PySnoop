@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<reader type="direct">
+  <port>0x378</port>
+  <uses_cp>false</uses_cp>
+  <tracks>
+    <track number="1" clock_pin="1" data_pin="2" />
+    <track number="2" clock_pin="3" data_pin="4" />
+    <track number="3" clock_pin="5" data_pin="6" />
+  </tracks>
+</reader>

@@ -1,0 +1,11 @@
+# Core dependencies
+pyserial>=3.5
+lxml>=4.6.0
+hidapi>=0.11.0  # Required for MSR605 USB HID support
+pyusb>=1.2.0    # Required for USB device access
+
+# Development dependencies
+pytest>=6.0.0
+pytest-cov>=2.0.0
+mypy>=0.910
+flake8>=3.9.0

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reader type="msr605">
+    <!-- Optional: Specify the device path if you want to use a specific device -->
+    <!-- <device_path>/dev/hidraw0</device_path> -->
+    
+    <!-- Configure which tracks to read/write -->
+    <tracks>
+        <track number="1" readable="true" writable="true" />
+        <track number="2" readable="true" writable="true" />
+        <track number="3" readable="true" writable="true" />
+    </tracks>
+</reader>
