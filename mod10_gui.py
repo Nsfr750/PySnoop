@@ -21,30 +21,32 @@ class Mod10GUI:
     def __init__(self, root):
         """Initialize the GUI."""
         self.root = root
-        self.root.title("Luhn Algorithm Tool")
-        self.root.geometry("500x400")
-        self.root.minsize(450, 350)
+        self.root.title("Card Validator")
         
-        # Set application icon if available
-        try:
-            self.root.iconbitmap("icon.ico")
-        except:
-            pass  # Use default icon if file not found
+        # Set window size and position
+        window_width = 700  # Slightly wider to accommodate both validators
+        window_height = 600
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        center_x = int(screen_width/2 - window_width/2)
+        center_y = int(screen_height/2 - window_height/2)
+        self.root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
         
-        self.setup_ui()
-    
-    def setup_ui(self):
-        """Set up the user interface."""
+        # Configure styles
+        self.style = ttk.Style()
+        self.style.configure('TNotebook.Tab', padding=[10, 5])
+        
         # Create main container
-        main_frame = ttk.Frame(self.root, padding="10")
+        main_frame = ttk.Frame(root, padding="10")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Create notebook for tabs
+        # Create notebook
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.pack(fill=tk.BOTH, expand=True)
         
-        # Create tabs
+        # Setup tabs
         self.setup_validation_tab()
+        self.setup_c10_tab()
         self.setup_generation_tab()
         self.setup_about_tab()
         
@@ -59,9 +61,9 @@ class Mod10GUI:
         status_bar.pack(fill=tk.X, pady=(5, 0))
     
     def setup_validation_tab(self):
-        """Set up the credit card validation tab."""
+        """Set up the MOD10 credit card validation tab."""
         tab = ttk.Frame(self.notebook)
-        self.notebook.add(tab, text="Validate Card")
+        self.notebook.add(tab, text="MOD10 Validator")
         
         # Main container with padding
         container = ttk.Frame(tab, padding=10)
@@ -101,6 +103,162 @@ class Mod10GUI:
             font=('Arial', 12)
         )
         self.result_text.pack(expand=True)
+    
+    def setup_c10_tab(self):
+        """Set up the C10 validation tab."""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="C10 Validator")
+        
+        # Main container with padding
+        container = ttk.Frame(tab, padding=10)
+        container.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        title = ttk.Label(
+            container,
+            text="C10 Validation",
+            font=('Helvetica', 14, 'bold')
+        )
+        title.pack(pady=(0, 15))
+        
+        # Input frame
+        input_frame = ttk.LabelFrame(container, text="Card Number", padding=10)
+        input_frame.pack(fill=tk.X, pady=5)
+        
+        # Card number entry
+        self.c10_card_var = tk.StringVar()
+        self.c10_card_entry = ttk.Entry(
+            input_frame,
+            textvariable=self.c10_card_var,
+            font=('Courier', 12),
+            width=30
+        )
+        self.c10_card_entry.pack(fill=tk.X, padx=5, pady=5)
+        self.c10_card_entry.bind('<KeyRelease>', self.on_c10_input_change)
+        
+        # Buttons frame
+        btn_frame = ttk.Frame(container)
+        btn_frame.pack(pady=10)
+        
+        # Validate button
+        validate_btn = ttk.Button(
+            btn_frame,
+            text="Validate C10",
+            command=self.validate_c10,
+            style="Accent.TButton"
+        )
+        validate_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Clear button
+        clear_btn = ttk.Button(
+            btn_frame,
+            text="Clear",
+            command=self.clear_c10_input
+        )
+        clear_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Results frame
+        results_frame = ttk.LabelFrame(container, text="Results", padding=10)
+        results_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Results text
+        self.c10_results = scrolledtext.ScrolledText(
+            results_frame,
+            height=8,
+            wrap=tk.WORD,
+            font=('Consolas', 10),
+            state='disabled'
+        )
+        self.c10_results.pack(fill=tk.BOTH, expand=True)
+        
+        # Add some padding at the bottom
+        ttk.Frame(container, height=10).pack()
+    
+    def on_c10_input_change(self, event=None):
+        """Handle changes in the C10 card number input."""
+        # Remove any non-digit characters
+        current = self.c10_card_var.get()
+        digits = ''.join(filter(str.isdigit, current))
+        if current != digits:
+            self.c10_card_var.set(digits)
+    
+    def validate_c10(self):
+        """Validate the card number using C10 algorithm."""
+        card_number = self.c10_card_var.get().strip()
+        
+        if not card_number.isdigit():
+            self.show_c10_result("Invalid input. Please enter numeric characters only.", is_error=True)
+            return
+            
+        if len(card_number) < 1:
+            self.show_c10_result("Please enter a card number.", is_error=True)
+            return
+            
+        try:
+            # Implement C10 validation logic here
+            # For now, we'll just show a placeholder message
+            is_valid = self.is_valid_c10(card_number)
+            
+            if is_valid:
+                self.show_c10_result(f"✅ Valid C10 number: {card_number}")
+            else:
+                self.show_c10_result(f"❌ Invalid C10 number: {card_number}", is_error=True)
+                
+        except Exception as e:
+            self.show_c10_result(f"Error during validation: {str(e)}", is_error=True)
+    
+    def is_valid_c10(self, number):
+        """
+        Validate a number using the C10 algorithm.
+        
+        Args:
+            number (str): The number to validate
+            
+        Returns:
+            bool: True if valid, False otherwise
+        """
+        try:
+            # Convert to list of integers
+            digits = [int(d) for d in str(number)]
+            
+            # Double every second digit from the right
+            for i in range(len(digits) - 2, -1, -2):
+                digits[i] *= 2
+                if digits[i] > 9:
+                    digits[i] = (digits[i] // 10) + (digits[i] % 10)
+            
+            # Sum all digits
+            total = sum(digits)
+            
+            # Check if total is a multiple of 10
+            return total % 10 == 0
+            
+        except Exception as e:
+            print(f"Error in C10 validation: {e}")
+            return False
+    
+    def show_c10_result(self, message, is_error=False):
+        """Display the validation result in the C10 results box."""
+        self.c10_results.config(state='normal')
+        self.c10_results.delete(1.0, tk.END)
+        
+        # Configure tags for styling
+        self.c10_results.tag_configure('error', foreground='red')
+        self.c10_results.tag_configure('success', foreground='green')
+        
+        # Insert the message with appropriate tags
+        if is_error:
+            self.c10_results.insert(tk.END, message, 'error')
+        else:
+            self.c10_results.insert(tk.END, message, 'success')
+            
+        self.c10_results.config(state='disabled')
+    
+    def clear_c10_input(self):
+        """Clear the C10 input and results."""
+        self.c10_card_var.set('')
+        self.show_c10_result("")
+        self.c10_card_entry.focus()
     
     def setup_generation_tab(self):
         """Set up the credit card generation tab."""
