@@ -26,10 +26,6 @@ MSR_CMD_GET_DEVICE_MODEL = b'\x1B\x74'  # Get device model
 MSR_CMD_GET_FIRMWARE = b'\x1B\x76'  # Get firmware version
 MSR_CMD_GET_SERIAL = b'\x1B\x6A'  # Get serial number
 
-# Track densities
-TRACK_DENSITY_LOCO = 0  # 210 bpi
-TRACK_DENSITY_HICO = 1  # 75 bpi
-
 # Default settings
 DEFAULT_BAUD_RATE = 9600
 DEFAULT_PORT = 'COM5'
@@ -40,6 +36,7 @@ from reader import Reader
 class MSR605Reader(Reader):
     """
     Implementation of the MagTek MSR605 magnetic stripe card reader/writer
+    using PySerial for communication.
     """
     
     def __init__(self, com_port: Optional[str] = None, baud_rate: int = DEFAULT_BAUD_RATE):
@@ -58,7 +55,7 @@ class MSR605Reader(Reader):
         self.verbose = False
         self.readable_tracks = [1, 2, 3]  # All tracks readable
         self.writable_tracks = [1, 2, 3]  # All tracks writable
-        
+    
     def set_serial_port(self, com_port: str, baud_rate: int = None) -> None:
         """
         Set the serial port and optionally the baud rate for the MSR605
@@ -70,7 +67,7 @@ class MSR605Reader(Reader):
         self.com_port = com_port
         if baud_rate is not None:
             self.baud_rate = baud_rate
-            
+    
     @staticmethod
     def list_serial_ports() -> List[Dict[str, Any]]:
         """
@@ -147,9 +144,9 @@ class MSR605Reader(Reader):
             return False
             
         except Exception as e:
-            import traceback
             print(f"Error initializing MSR605: {str(e)}")
             if self.verbose:
+                import traceback
                 print(traceback.format_exc())
             self.close()
             return False
@@ -281,38 +278,160 @@ class MSR605Reader(Reader):
         """
         if not self.initialized and not self.init_reader():
             print("Error: Could not initialize MSR605")
-        
-        # Convert to strings
-        result = {}
-        for track, data in tracks.items():
-        """
+            return None
+            
         try:
-            import xml.etree.ElementTree as ET
+            # Send read command
+            self._send_command(MSR_CMD_READ_RAW)
+            time.sleep(0.1)  # Give the device time to respond
             
-            root = ET.Element("reader")
-            root.set("type", "msr605")
+            # Read response with a longer timeout for reading
+            response = self._send_command(b'', response=True, timeout=5.0)
             
-            if self.device_path:
-                path_elem = ET.SubElement(root, "device_path")
-                path_elem.text = self.device_path
+            if not response:
+                print("No response from MSR605")
+                return None
                 
-            tree = ET.ElementTree(root)
-            tree.write(filename, encoding='utf-8', xml_declaration=True)
-            return True
+            # Parse track data
+            tracks = {}
+            current_track = None
+            
+            for b in response:
+                if b == 0x01:  # Start of track 1
+                    current_track = 1
+                    tracks[current_track] = bytearray()
+                elif b == 0x02:  # Start of track 2
+                    current_track = 2
+                    tracks[current_track] = bytearray()
+                elif b == 0x03:  # Start of track 3
+                    current_track = 3
+                    tracks[current_track] = bytearray()
+                elif b == 0x0D:  # Carriage return
+                    current_track = None
+                elif current_track is not None:
+                    tracks[current_track].append(b)
+            
+            # Convert to strings
+            result = {}
+            for track, data in tracks.items():
+                try:
+                    result[f'track{track}'] = data.decode('ascii', errors='replace').strip()
+                except Exception as e:
+                    print(f"Error decoding track {track}: {str(e)}")
+                    result[f'track{track}'] = data.hex()
+            
+            return result if result else None
             
         except Exception as e:
-            print(f"Error writing XML configuration: {e}", file=sys.stderr)
+            print(f"Error reading from MSR605: {str(e)}")
+            if self.verbose:
+                import traceback
+                print(traceback.format_exc())
+            return None
+    
+    def write(self, track_data: Dict[int, str]) -> bool:
+        """
+        Write data to a card using the MSR605
+        
+        Args:
+            track_data: Dictionary mapping track numbers (1-3) to data strings
+            
+        Returns:
+            bool: True if write was successful, False otherwise
+        """
+        if not self.initialized and not self.init_reader():
+            print("Error: Could not initialize MSR605")
+            return False
+            
+        if not track_data or not isinstance(track_data, dict):
+            print("Error: Invalid track data")
+            return False
+            
+        try:
+            # Prepare write command
+            write_cmd = bytearray(MSR_CMD_WRITE)
+            
+            # Add track data
+            for track_num, data in track_data.items():
+                if track_num not in [1, 2, 3]:
+                    print(f"Warning: Invalid track number {track_num}, skipping")
+                    continue
+                    
+                if not isinstance(data, (str, bytes, bytearray)):
+                    print(f"Warning: Invalid data type for track {track_num}, skipping")
+                    continue
+                    
+                # Convert string to bytes if needed
+                if isinstance(data, str):
+                    try:
+                        data = data.encode('ascii')
+                    except UnicodeEncodeError:
+                        print(f"Warning: Could not encode track {track_num} data to ASCII, skipping")
+                        continue
+                
+                # Add track start marker and data
+                write_cmd.append(track_num)  # Track start marker (0x01, 0x02, or 0x03)
+                write_cmd.extend(data)      # Track data
+            
+            # Add end marker if we have any tracks to write
+            if len(write_cmd) > len(MSR_CMD_WRITE):
+                write_cmd.append(0x3F)  # '?' end marker
+                
+                # Send the write command
+                print(f"Sending write command: {write_cmd.hex(' ')}")
+                self._send_command(bytes(write_cmd))
+                
+                # Wait for the write to complete
+                time.sleep(1.0)
+                
+                # Verify the write by reading back the data
+                print("Verifying write...")
+                read_data = self.read()
+                
+                if read_data:
+                    print("Write verification results:")
+                    for track, data in track_data.items():
+                        track_key = f'track{track}'
+                        if track_key in read_data:
+                            match = read_data[track_key] == data
+                            print(f"  Track {track}: {'OK' if match else 'MISMATCH'}")
+                        else:
+                            print(f"  Track {track}: MISSING")
+                    
+                    return all(
+                        read_data.get(f'track{track}', '') == data 
+                        for track, data in track_data.items()
+                    )
+                
+                return False
+            
+            print("No valid track data to write")
+            return False
+            
+        except Exception as e:
+            print(f"Error writing to card: {str(e)}")
+            if self.verbose:
+                import traceback
+                print(traceback.format_exc())
             return False
     
+    def close(self) -> None:
+        """Close the connection to the MSR605"""
+        try:
+            if hasattr(self, 'serial') and self.serial and self.serial.is_open:
+                self.serial.close()
+            self.initialized = False
+        except Exception as e:
+            print(f"Error closing MSR605: {str(e)}")
+            if self.verbose:
+                import traceback
+                print(traceback.format_exc())
+    
     def __del__(self):
-        """Clean up resources"""
-        if hasattr(self, 'device') and self.device:
-            try:
-                self.device.close()
-            except:
-                pass
+        """Destructor to ensure the serial connection is properly closed"""
+        self.close()
 
-# Helper function to list available MSR605 devices
+
 def list_msr605_devices() -> List[Dict[str, Any]]:
     """
     List all connected MSR605 devices
@@ -320,14 +439,12 @@ def list_msr605_devices() -> List[Dict[str, Any]]:
     Returns:
         List[Dict[str, Any]]: List of device information dictionaries
     """
-    try:
-        devices = hid.enumerate(MSR605_VENDOR_ID, MSR605_PRODUCT_ID)
-        return devices or []
-    except:
-        return []
+    # For serial devices, we can't reliably detect MSR605 without trying to communicate
+    # So we'll just list all available serial ports
+    return MSR605Reader.list_serial_ports()
 
-# Add to the reader factory in reader.py
-def create_msr605_reader(config):
+
+def create_msr605_reader(config: Dict[str, Any]) -> 'MSR605Reader':
     """
     Create an MSR605 reader from a configuration dictionary
     
@@ -337,15 +454,11 @@ def create_msr605_reader(config):
     Returns:
         MSR605Reader: Configured MSR605 reader instance
     """
-    # Get device path from config or use default
-    device_path = config.get('device_path')
+    com_port = config.get('com_port', DEFAULT_PORT)
+    baud_rate = config.get('baud_rate', DEFAULT_BAUD_RATE)
+    verbose = config.get('verbose', False)
     
-    # Create and configure the reader
-    reader = MSR605Reader(device_path)
-    reader.set_verbose(config.get('verbose', False))
-    
-    # Set readable tracks if specified
-    if 'readable_tracks' in config:
-        reader.set_readable_tracks(config['readable_tracks'])
+    reader = MSR605Reader(com_port=com_port, baud_rate=baud_rate)
+    reader.verbose = verbose
     
     return reader
