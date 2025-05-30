@@ -176,7 +176,6 @@ class PySnoopGUI(tk.Tk):
         self._create_database_tab()
         self._create_c10_tab()
         self._create_settings_tab()
-        self._create_about_tab()
         
         # Status bar
         self.status_var = tk.StringVar(value="Ready")
@@ -1075,13 +1074,7 @@ class PySnoopGUI(tk.Tk):
         self._show_c10_result("")
         self.c10_entry.focus()
     
-    def _create_about_tab(self):
-        """Create the about tab with application information."""
-        tab = ttk.Frame(self.notebook, padding=10)
-        self.notebook.add(tab, text="About")
-        
-        # Create the about tab using the about module
-        create_about_tab(tab)
+
     
     def _create_settings_tab(self):
         """Create the settings tab."""
