@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start Guide &mdash; PySnoop 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PySnoop Modules" href="modules.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PySnoop
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">PySnoop Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="README.html#building-the-documentation">Building the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#viewing-the-documentation">Viewing the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-via-pip">Install via pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#launching-the-application">Launching the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-a-card-reader">Connecting a Card Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-a-card">Reading a Card</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validating-card-numbers">Validating Card Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-card-database">Managing Card Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">PySnoop Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#core-modules">Core Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/pysnoop.html">pysnoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/card.html">card</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/reader.html">reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/database.html">database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#gui-modules">GUI Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/pysnoop_gui.html">pysnoop_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/mod10_gui.html">mod10_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/menu.html">menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/about.html">about</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/ssflags.html">ssflags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/version.html">version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/api.html#core-modules">Core Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api.html#gui-modules">GUI Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer/api.html#pysnoop.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/contributing.html">Contributing to PySnoop</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#code-review-process">Code Review Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">Unreleased</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#fixed">Fixed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PySnoop</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick Start Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start-guide">
+<span id="quickstart"></span><h1>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Link to this heading"></a></h1>
+<p>This guide will help you get started with PySnoop quickly.</p>
+<section id="launching-the-application">
+<h2>Launching the Application<a class="headerlink" href="#launching-the-application" title="Link to this heading"></a></h2>
+<p>After installation, you can launch PySnoop from the command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pysnoop
+</pre></div>
+</div>
+<p>Or if you installed in development mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pysnoop
+</pre></div>
+</div>
+</section>
+<section id="connecting-a-card-reader">
+<h2>Connecting a Card Reader<a class="headerlink" href="#connecting-a-card-reader" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Connect your magnetic stripe card reader to your computer.</p></li>
+<li><p>Ensure the reader is properly recognized by your operating system.</p></li>
+<li><p>In PySnoop, select the correct COM port from the dropdown menu.</p></li>
+<li><p>Click “Initialize Reader” to establish the connection.</p></li>
+</ol>
+</section>
+<section id="reading-a-card">
+<h2>Reading a Card<a class="headerlink" href="#reading-a-card" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Insert a magnetic stripe card into the reader.</p></li>
+<li><p>Click the “Read Card” button in the PySnoop interface.</p></li>
+<li><p>The card data will be displayed in the main window.</p></li>
+</ol>
+</section>
+<section id="validating-card-numbers">
+<h2>Validating Card Numbers<a class="headerlink" href="#validating-card-numbers" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Go to the “C10 Validator” tab.</p></li>
+<li><p>Enter a card number in the input field.</p></li>
+<li><p>Click “Validate C10” to check if the number is valid.</p></li>
+<li><p>The result will be displayed below the input field.</p></li>
+</ol>
+</section>
+<section id="managing-card-database">
+<h2>Managing Card Database<a class="headerlink" href="#managing-card-database" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>To save a card to the database, read a card and click “Save to Database”.</p></li>
+<li><p>View saved cards in the “Database” tab.</p></li>
+<li><p>Export card data using the “Export” button (supports JSON and CSV formats).</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Card Not Reading</strong>: Ensure the card is properly inserted and the reader is connected.</p></li>
+<li><p><strong>Connection Issues</strong>: Try a different USB port or check device manager for conflicts.</p></li>
+<li><p><strong>Validation Errors</strong>: Check that the card number is entered correctly.</p></li>
+</ul>
+<p>For more detailed information, please refer to the <span class="xref std std-doc">user/interface</span> guide.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="PySnoop Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Nsfr750.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

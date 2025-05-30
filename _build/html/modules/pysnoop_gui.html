@@ -1,0 +1,741 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysnoop_gui &mdash; PySnoop 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mod10_gui" href="mod10_gui.html" />
+    <link rel="prev" title="database" href="database.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySnoop
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">PySnoop Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#building-the-documentation">Building the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#viewing-the-documentation">Viewing the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-via-pip">Install via pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#launching-the-application">Launching the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#connecting-a-card-reader">Connecting a Card Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#reading-a-card">Reading a Card</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validating-card-numbers">Validating Card Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#managing-card-database">Managing Card Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">PySnoop Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#core-modules">Core Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysnoop.html">pysnoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="card.html">card</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reader.html">reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database.html">database</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html#gui-modules">GUI Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pysnoop_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mod10_gui.html">mod10_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="menu.html">menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html">about</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ssflags.html">ssflags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version.html">version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#core-modules">Core Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#gui-modules">GUI Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/api.html#pysnoop.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing to PySnoop</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#code-review-process">Code Review Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#id2">Unreleased</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#fixed">Fixed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySnoop</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">PySnoop Modules</a></li>
+      <li class="breadcrumb-item active">pysnoop_gui</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/pysnoop_gui.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pysnoop-gui">
+<span id="pysnoop-gui-module"></span><h1>pysnoop_gui<a class="headerlink" href="#pysnoop-gui" title="Link to this heading"></a></h1>
+<p id="module-pysnoop_gui">PySnoop - GUI Implementation</p>
+<p>A modern Tkinter-based GUI for the PySnoop magstripe card reader application.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysnoop_gui.</span></span><span class="sig-name descname"><span class="pre">PySnoopGUI</span></span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
+<p>Main application window for PySnoop GUI.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.print_hid_devices">
+<span class="sig-name descname"><span class="pre">print_hid_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.print_hid_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.print_hid_devices" title="Link to this definition"></a></dt>
+<dd><p>Print all connected HID devices for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._setup_styles">
+<span class="sig-name descname"><span class="pre">_setup_styles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._setup_styles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._setup_styles" title="Link to this definition"></a></dt>
+<dd><p>Configure application styles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._on_theme_change">
+<span class="sig-name descname"><span class="pre">_on_theme_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._on_theme_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._on_theme_change" title="Link to this definition"></a></dt>
+<dd><p>Handle theme change event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_widgets">
+<span class="sig-name descname"><span class="pre">_create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_widgets" title="Link to this definition"></a></dt>
+<dd><p>Create and arrange all UI widgets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.init_reader">
+<span class="sig-name descname"><span class="pre">init_reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.init_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.init_reader" title="Link to this definition"></a></dt>
+<dd><p>Initialize the selected card reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.read_card">
+<span class="sig-name descname"><span class="pre">read_card</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.read_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.read_card" title="Link to this definition"></a></dt>
+<dd><p>Read data from the card using the initialized reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.stop_reading">
+<span class="sig-name descname"><span class="pre">stop_reading</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.stop_reading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.stop_reading" title="Link to this definition"></a></dt>
+<dd><p>Stop the current card reading operation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_reader_tab">
+<span class="sig-name descname"><span class="pre">_create_reader_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_reader_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_reader_tab" title="Link to this definition"></a></dt>
+<dd><p>Create the card reader tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.browse_database">
+<span class="sig-name descname"><span class="pre">browse_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.browse_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.browse_database" title="Link to this definition"></a></dt>
+<dd><p>Open a file dialog to select a database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._populate_card_list">
+<span class="sig-name descname"><span class="pre">_populate_card_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._populate_card_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._populate_card_list" title="Link to this definition"></a></dt>
+<dd><p>Populate the card list with data from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.load_database">
+<span class="sig-name descname"><span class="pre">load_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.load_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.load_database" title="Link to this definition"></a></dt>
+<dd><p>Load the selected database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._import_cards">
+<span class="sig-name descname"><span class="pre">_import_cards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._import_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._import_cards" title="Link to this definition"></a></dt>
+<dd><p>Import cards from a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._export_cards">
+<span class="sig-name descname"><span class="pre">_export_cards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._export_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._export_cards" title="Link to this definition"></a></dt>
+<dd><p>Export all cards to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>export_format</strong> (<em>str</em>) – The format to export to (‘json’ or ‘csv’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._clear_cards">
+<span class="sig-name descname"><span class="pre">_clear_cards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._clear_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._clear_cards" title="Link to this definition"></a></dt>
+<dd><p>Clear all cards from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_database_tab">
+<span class="sig-name descname"><span class="pre">_create_database_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_database_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_database_tab" title="Link to this definition"></a></dt>
+<dd><p>Create the database management tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.on_card_select">
+<span class="sig-name descname"><span class="pre">on_card_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.on_card_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.on_card_select" title="Link to this definition"></a></dt>
+<dd><p>Handle card selection in the database view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._setup_menu_callbacks">
+<span class="sig-name descname"><span class="pre">_setup_menu_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._setup_menu_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._setup_menu_callbacks" title="Link to this definition"></a></dt>
+<dd><p>Set up menu item callbacks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._new_database">
+<span class="sig-name descname"><span class="pre">_new_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._new_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._new_database" title="Link to this definition"></a></dt>
+<dd><p>Create a new database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._save_database">
+<span class="sig-name descname"><span class="pre">_save_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._save_database" title="Link to this definition"></a></dt>
+<dd><p>Save the current database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._save_database_as">
+<span class="sig-name descname"><span class="pre">_save_database_as</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_database_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._save_database_as" title="Link to this definition"></a></dt>
+<dd><p>Save the current database to a new file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._zoom_in">
+<span class="sig-name descname"><span class="pre">_zoom_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._zoom_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._zoom_in" title="Link to this definition"></a></dt>
+<dd><p>Increase the font size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._zoom_out">
+<span class="sig-name descname"><span class="pre">_zoom_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._zoom_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._zoom_out" title="Link to this definition"></a></dt>
+<dd><p>Decrease the font size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._reset_zoom">
+<span class="sig-name descname"><span class="pre">_reset_zoom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._reset_zoom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._reset_zoom" title="Link to this definition"></a></dt>
+<dd><p>Reset the font size to default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._adjust_font_size">
+<span class="sig-name descname"><span class="pre">_adjust_font_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._adjust_font_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._adjust_font_size" title="Link to this definition"></a></dt>
+<dd><p>Adjust the font size by the given delta.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_c10_tab">
+<span class="sig-name descname"><span class="pre">_create_c10_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_c10_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_c10_tab" title="Link to this definition"></a></dt>
+<dd><p>Create the C10 validation tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._on_c10_input_change">
+<span class="sig-name descname"><span class="pre">_on_c10_input_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._on_c10_input_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._on_c10_input_change" title="Link to this definition"></a></dt>
+<dd><p>Handle changes in the C10 card number input.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._validate_c10">
+<span class="sig-name descname"><span class="pre">_validate_c10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._validate_c10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._validate_c10" title="Link to this definition"></a></dt>
+<dd><p>Validate the card number using C10 (Luhn) algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._is_valid_c10">
+<span class="sig-name descname"><span class="pre">_is_valid_c10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._is_valid_c10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._is_valid_c10" title="Link to this definition"></a></dt>
+<dd><p>Validate a number using the C10 (Luhn) algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>str</em>) – The number to validate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if valid, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._show_c10_result">
+<span class="sig-name descname"><span class="pre">_show_c10_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._show_c10_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._show_c10_result" title="Link to this definition"></a></dt>
+<dd><p>Display the validation result in the C10 results box.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._clear_c10_input">
+<span class="sig-name descname"><span class="pre">_clear_c10_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._clear_c10_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._clear_c10_input" title="Link to this definition"></a></dt>
+<dd><p>Clear the C10 input and results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_about_tab">
+<span class="sig-name descname"><span class="pre">_create_about_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_about_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_about_tab" title="Link to this definition"></a></dt>
+<dd><p>Create the about tab with application information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._create_settings_tab">
+<span class="sig-name descname"><span class="pre">_create_settings_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_settings_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._create_settings_tab" title="Link to this definition"></a></dt>
+<dd><p>Create the settings tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._load_settings">
+<span class="sig-name descname"><span class="pre">_load_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._load_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._load_settings" title="Link to this definition"></a></dt>
+<dd><p>Load settings from file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.save_settings">
+<span class="sig-name descname"><span class="pre">save_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.save_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.save_settings" title="Link to this definition"></a></dt>
+<dd><p>Save current settings to file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._reset_settings">
+<span class="sig-name descname"><span class="pre">_reset_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._reset_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._reset_settings" title="Link to this definition"></a></dt>
+<dd><p>Reset settings to default values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.update_recent_files">
+<span class="sig-name descname"><span class="pre">update_recent_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.update_recent_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.update_recent_files" title="Link to this definition"></a></dt>
+<dd><p>Update the list of recently opened files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.process_messages">
+<span class="sig-name descname"><span class="pre">process_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.process_messages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.process_messages" title="Link to this definition"></a></dt>
+<dd><p>Process messages from the message queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._save_card_data">
+<span class="sig-name descname"><span class="pre">_save_card_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_card_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._save_card_data" title="Link to this definition"></a></dt>
+<dd><p>Save the current card data to the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI._handle_card_data">
+<span class="sig-name descname"><span class="pre">_handle_card_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._handle_card_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI._handle_card_data" title="Link to this definition"></a></dt>
+<dd><p>Handle card data received from the reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysnoop_gui.PySnoopGUI.on_closing">
+<span class="sig-name descname"><span class="pre">on_closing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.on_closing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.PySnoopGUI.on_closing" title="Link to this definition"></a></dt>
+<dd><p>Handle application closing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysnoop_gui.</span></span><span class="sig-name descname"><span class="pre">PySnoopGUI</span></span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
+<p>Main application window for PySnoop GUI.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Initialize the application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">print_hid_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.print_hid_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Print all connected HID devices for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">_setup_styles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._setup_styles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Configure application styles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">_on_theme_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._on_theme_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Handle theme change event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">_create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Create and arrange all UI widgets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">init_reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.init_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Initialize the selected card reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">read_card</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.read_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Read data from the card using the initialized reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">stop_reading</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.stop_reading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Stop the current card reading operation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">_create_reader_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_reader_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Create the card reader tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">browse_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.browse_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd><p>Open a file dialog to select a database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">_populate_card_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._populate_card_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd><p>Populate the card list with data from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">load_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.load_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd><p>Load the selected database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">_import_cards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._import_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd><p>Import cards from a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">_export_cards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._export_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd><p>Export all cards to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>export_format</strong> (<em>str</em>) – The format to export to (‘json’ or ‘csv’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">_clear_cards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._clear_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
+<dd><p>Clear all cards from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">_create_database_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_database_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
+<dd><p>Create the database management tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">on_card_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.on_card_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
+<dd><p>Handle card selection in the database view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">_setup_menu_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._setup_menu_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id18" title="Link to this definition"></a></dt>
+<dd><p>Set up menu item callbacks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">_new_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._new_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id19" title="Link to this definition"></a></dt>
+<dd><p>Create a new database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">_save_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id20" title="Link to this definition"></a></dt>
+<dd><p>Save the current database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">_save_database_as</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_database_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id21" title="Link to this definition"></a></dt>
+<dd><p>Save the current database to a new file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">_zoom_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._zoom_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
+<dd><p>Increase the font size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">_zoom_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._zoom_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id23" title="Link to this definition"></a></dt>
+<dd><p>Decrease the font size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">_reset_zoom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._reset_zoom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id24" title="Link to this definition"></a></dt>
+<dd><p>Reset the font size to default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">_adjust_font_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._adjust_font_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
+<dd><p>Adjust the font size by the given delta.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">_create_c10_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_c10_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id26" title="Link to this definition"></a></dt>
+<dd><p>Create the C10 validation tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">_on_c10_input_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._on_c10_input_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id27" title="Link to this definition"></a></dt>
+<dd><p>Handle changes in the C10 card number input.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">_validate_c10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._validate_c10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id28" title="Link to this definition"></a></dt>
+<dd><p>Validate the card number using C10 (Luhn) algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">_is_valid_c10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._is_valid_c10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id29" title="Link to this definition"></a></dt>
+<dd><p>Validate a number using the C10 (Luhn) algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>str</em>) – The number to validate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if valid, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">_show_c10_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._show_c10_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id30" title="Link to this definition"></a></dt>
+<dd><p>Display the validation result in the C10 results box.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">_clear_c10_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._clear_c10_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id31" title="Link to this definition"></a></dt>
+<dd><p>Clear the C10 input and results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-name descname"><span class="pre">_create_about_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_about_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id32" title="Link to this definition"></a></dt>
+<dd><p>Create the about tab with application information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-name descname"><span class="pre">_create_settings_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._create_settings_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id33" title="Link to this definition"></a></dt>
+<dd><p>Create the settings tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-name descname"><span class="pre">_load_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._load_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id34" title="Link to this definition"></a></dt>
+<dd><p>Load settings from file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-name descname"><span class="pre">save_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.save_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id35" title="Link to this definition"></a></dt>
+<dd><p>Save current settings to file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id36">
+<span class="sig-name descname"><span class="pre">_reset_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._reset_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id36" title="Link to this definition"></a></dt>
+<dd><p>Reset settings to default values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-name descname"><span class="pre">update_recent_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.update_recent_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id37" title="Link to this definition"></a></dt>
+<dd><p>Update the list of recently opened files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id38">
+<span class="sig-name descname"><span class="pre">process_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.process_messages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id38" title="Link to this definition"></a></dt>
+<dd><p>Process messages from the message queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id39">
+<span class="sig-name descname"><span class="pre">_save_card_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._save_card_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id39" title="Link to this definition"></a></dt>
+<dd><p>Save the current card data to the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id40">
+<span class="sig-name descname"><span class="pre">_handle_card_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI._handle_card_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id40" title="Link to this definition"></a></dt>
+<dd><p>Handle card data received from the reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id41">
+<span class="sig-name descname"><span class="pre">on_closing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#PySnoopGUI.on_closing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id41" title="Link to this definition"></a></dt>
+<dd><p>Handle application closing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysnoop_gui.main">
+<span class="sig-prename descclassname"><span class="pre">pysnoop_gui.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysnoop_gui.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysnoop_gui.main" title="Link to this definition"></a></dt>
+<dd><p>Main entry point for the application.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="database.html" class="btn btn-neutral float-left" title="database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod10_gui.html" class="btn btn-neutral float-right" title="mod10_gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Nsfr750.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

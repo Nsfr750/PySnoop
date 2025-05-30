@@ -64,5 +64,9 @@ def check_version_compatibility(min_version):
     
     return True
 
+# Module metadata
+__author__ = "Nsfr750"
+__email__ = "nsfr750@yandex.com"  # Replace with actual email if available
+
 # Expose version as a module-level attribute for easy access
 __version__ = get_version()
