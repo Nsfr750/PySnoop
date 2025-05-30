@@ -3,6 +3,7 @@ Database package for Stripe Snoop - contains card test implementations and datab
 """
 
 from .test_result import TestResult
+from .card_storage import CardStorage
 from .card_tests import (
     GenericTest,
     VisaTest,

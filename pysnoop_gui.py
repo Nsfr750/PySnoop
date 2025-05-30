@@ -1,7 +1,7 @@
 """
-Stripe Snoop 2.0 - GUI Implementation
+PySnoop - GUI Implementation
 
-A modern Tkinter-based GUI for the Stripe Snoop magstripe card reader application.
+A modern Tkinter-based GUI for the PySnoop magstripe card reader application.
 """
 
 import tkinter as tk
@@ -22,7 +22,7 @@ import serial.tools.list_ports
 # Import core functionality
 from card import Card
 from reader import load_config, Reader
-from database import CardDatabase
+from database import CardStorage
 from ssflags import SSFlags
 
 # Try to import ttkthemes for better looking UI
@@ -33,21 +33,21 @@ except ImportError:
     THEMED_UI = False
     print("Note: ttkthemes not found, using default theme")
 
-class StripeSnoopGUI(tk.Tk):
-    """Main application window for Stripe Snoop GUI."""
+class PySnoopGUI(tk.Tk):
+    """Main application window for PySnoop GUI."""
     
     def __init__(self):
         """Initialize the application."""
         super().__init__()
         
-        self.title("Stripe Snoop 2.0")
+        self.title("PySnoop")
         self.geometry("1000x700")
         self.minsize(800, 600)
         
         # Initialize flags and state
         self.flags = SSFlags()
         self.reader = None
-        self.db = CardDatabase()
+        self.db = CardStorage()  # Initialize card storage
         self.current_card = None
         self.reader_thread = None
         self.stop_event = threading.Event()
@@ -361,9 +361,38 @@ class StripeSnoopGUI(tk.Tk):
         info_frame = ttk.Frame(card_frame)
         info_frame.pack(fill=tk.X, pady=(10, 0))
         
+        # Card type
         ttk.Label(info_frame, text="Card Type:").pack(side=tk.LEFT, padx=(0, 10))
         self.card_type_var = tk.StringVar(value="Unknown")
         ttk.Label(info_frame, textvariable=self.card_type_var, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        # Card number
+        ttk.Label(info_frame, text="Number:", padding=(20, 0, 0, 0)).pack(side=tk.LEFT)
+        self.card_number_var = tk.StringVar()
+        ttk.Label(info_frame, textvariable=self.card_number_var, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        # Card holder
+        ttk.Label(info_frame, text="Holder:", padding=(20, 0, 0, 0)).pack(side=tk.LEFT)
+        self.card_holder_var = tk.StringVar()
+        ttk.Label(info_frame, textvariable=self.card_holder_var, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        # Expiry date
+        ttk.Label(info_frame, text="Expires:", padding=(20, 0, 0, 0)).pack(side=tk.LEFT)
+        self.expiry_var = tk.StringVar()
+        ttk.Label(info_frame, textvariable=self.expiry_var, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        # Save button frame
+        button_frame = ttk.Frame(card_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        # Save button
+        self.save_btn = ttk.Button(
+            button_frame,
+            text="Save to Database",
+            command=self._save_card_data,
+            state=tk.DISABLED
+        )
+        self.save_btn.pack(side=tk.RIGHT)
     
     def browse_database(self):
         """Open a file dialog to select a database file."""
@@ -378,6 +407,35 @@ class StripeSnoopGUI(tk.Tk):
             self.settings['last_directory'] = str(Path(file_path).parent)
             self.save_settings()
     
+    def _populate_card_list(self):
+        """Populate the card list with data from the database."""
+        if not hasattr(self, 'card_list'):
+            return False  # Card list widget not initialized yet
+            
+        try:
+            # Clear existing items
+            self.card_list.delete(*self.card_list.get_children())
+            
+            # Add cards to the list
+            for idx, card in enumerate(self.db.get_all_cards()):
+                card_number = card.get('card_number', '')
+                card_holder = card.get('card_holder', 'Unknown')
+                timestamp = card.get('timestamp', 'Unknown')
+                
+                # Format the display text
+                display_text = f"Card ending in {card_number[-4:] if card_number else '****'}"
+                if card_holder and card_holder != 'Unknown':
+                    display_text += f" - {card_holder}"
+                display_text += f" ({timestamp.split('T')[0] if 'T' in timestamp else timestamp})"
+                
+                # Add to the treeview
+                self.card_list.insert('', 'end', values=(str(idx), display_text, timestamp))
+            return True
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to populate card list: {str(e)}")
+            return False
+    
     def load_database(self):
         """Load the selected database file."""
         db_path = self.db_path_var.get().strip()
@@ -388,113 +446,148 @@ class StripeSnoopGUI(tk.Tk):
         try:
             if db_path.endswith('.json'):
                 # Load JSON database
-                with open(db_path, 'r') as f:
+                with open(db_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                self.db.load_from_dict(data)
-            else:
-                # Load SQLite database
-                self.db.load(db_path)
                 
-            self._populate_card_list()
-            messagebox.showinfo("Success", f"Successfully loaded database from {db_path}")
+                # Clear existing data and load new data
+                self.db.clear()
+                for card in data:
+                    self.db.add_card(card)
+                
+                messagebox.showinfo("Success", f"Successfully loaded {len(data)} cards from {db_path}")
+                
+                # Refresh the card list
+                self._populate_card_list()
+                
+            else:
+                messagebox.showwarning("Not Supported", "Only JSON database files are currently supported")
+                
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load database: {str(e)}")
+            print(f"Error loading database: {e}")
     
-    def _populate_card_list(self):
-        """Populate the card list with data from the database."""
-        # Clear existing items
-        for item in self.card_tree.get_children():
-            self.card_tree.delete(item)
-            
-        # Add cards from database
-        for card in self.db.get_all_cards():
-            self.card_tree.insert(
-                "", "end",
-                values=(
-                    card.id,
-                    card.card_type or "",
-                    card.get_masked_number(),
-                    card.cardholder_name or "",
-                    card.expiration_date or ""
-                )
+    def _export_cards(self):
+        """Export all cards to a file."""
+        try:
+            # Ask for save location
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".json",
+                filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+                title="Export Cards"
             )
+            
+            if not file_path:
+                return  # User cancelled
+                
+            # Get all cards
+            cards = self.db.get_all_cards()
+            
+            # Save to file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(cards, f, indent=2)
+                
+            messagebox.showinfo("Success", f"Successfully exported {len(cards)} cards to {file_path}")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to export cards: {str(e)}")
     
+    def _clear_cards(self):
+        """Clear all cards from the database."""
+        if messagebox.askyesno(
+            "Confirm Clear",
+            "Are you sure you want to delete all cards? This action cannot be undone."
+        ):
+            try:
+                self.db.clear()
+                self._populate_card_list()
+                messagebox.showinfo("Success", "All cards have been deleted.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to clear cards: {str(e)}")
+        
     def _create_database_tab(self):
         """Create the database management tab."""
         tab = ttk.Frame(self.notebook)
         self.notebook.add(tab, text="Database")
         
-        # Main container with padding
+        # Main container
         container = ttk.Frame(tab, padding=10)
         container.pack(fill=tk.BOTH, expand=True)
         
-        # Controls frame
-        ctrl_frame = ttk.Frame(container)
+        # Database controls frame
+        ctrl_frame = ttk.LabelFrame(container, text="Database Controls", padding=10)
         ctrl_frame.pack(fill=tk.X, pady=(0, 10))
         
-        # Database file path
-        ttk.Label(ctrl_frame, text="Database:").pack(side=tk.LEFT, padx=(0, 5))
-        self.db_path_var = tk.StringVar()
-        db_entry = ttk.Entry(ctrl_frame, textvariable=self.db_path_var, width=40)
-        db_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        # Buttons frame
+        btn_frame = ttk.Frame(ctrl_frame)
+        btn_frame.pack(fill=tk.X, pady=5)
         
-        browse_btn = ttk.Button(
-            ctrl_frame,
-            text="Browse...",
-            command=self.browse_database
-        )
-        browse_btn.pack(side=tk.LEFT, padx=(0, 5))
-        
+        # Load button
         load_btn = ttk.Button(
-            ctrl_frame,
-            text="Load",
-            command=self.load_database,
-            style="Accent.TButton"
+            btn_frame,
+            text="Load Cards...",
+            command=self.load_database
         )
-        load_btn.pack(side=tk.LEFT)
+        load_btn.pack(side=tk.LEFT, padx=5)
         
-        # Card list
-        list_frame = ttk.LabelFrame(container, text="Cards in Database")
-        list_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+        # Export button
+        export_btn = ttk.Button(
+            btn_frame,
+            text="Export Cards...",
+            command=self._export_cards
+        )
+        export_btn.pack(side=tk.LEFT, padx=5)
         
-        # Treeview for card list
-        columns = ("id", "type", "number", "name", "date")
-        self.card_tree = ttk.Treeview(
+        # Clear button
+        clear_btn = ttk.Button(
+            btn_frame,
+            text="Clear All",
+            command=self._clear_cards,
+            style="Danger.TButton"
+        )
+        clear_btn.pack(side=tk.RIGHT, padx=5)
+        
+        # Card list frame
+        list_frame = ttk.LabelFrame(container, text="Stored Cards", padding=10)
+        list_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create treeview with scrollbars
+        tree_scroll = ttk.Scrollbar(list_frame)
+        tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Create the card list treeview
+        columns = ('id', 'card_info', 'timestamp')
+        self.card_list = ttk.Treeview(
             list_frame,
             columns=columns,
-            show="headings",
-            selectmode="browse"
+            show='headings',
+            yscrollcommand=tree_scroll.set,
+            selectmode='browse'
         )
         
-        # Configure columns
-        self.card_tree.heading("id", text="ID")
-        self.card_tree.heading("type", text="Type")
-        self.card_tree.heading("number", text="Number")
-        self.card_tree.heading("name", text="Name")
-        self.card_tree.heading("date", text="Date")
+        # Configure the scrollbar
+        tree_scroll.config(command=self.card_list.yview)
         
-        self.card_tree.column("id", width=50, anchor=tk.CENTER)
-        self.card_tree.column("type", width=100, anchor=tk.W)
-        self.card_tree.column("number", width=150, anchor=tk.W)
-        self.card_tree.column("name", width=200, anchor=tk.W)
-        self.card_tree.column("date", width=150, anchor=tk.W)
+        # Define columns
+        self.card_list.heading('id', text='ID')
+        self.card_list.heading('card_info', text='Card Information')
+        self.card_list.heading('timestamp', text='Date Added')
         
-        # Add scrollbar
-        scrollbar = ttk.Scrollbar(
-            list_frame,
-            orient=tk.VERTICAL,
-            command=self.card_tree.yview
-        )
-        self.card_tree.configure(yscrollcommand=scrollbar.set)
+        # Set column widths
+        self.card_list.column('id', width=50, anchor=tk.CENTER, stretch=tk.NO)
+        self.card_list.column('card_info', width=300, anchor=tk.W)
+        self.card_list.column('timestamp', width=150, anchor=tk.W, stretch=tk.NO)
         
-        # Pack tree and scrollbar
-        self.card_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # Pack the treeview
+        self.card_list.pack(fill=tk.BOTH, expand=True)
+        
+        # Bind selection event
+        self.card_list.bind('<<TreeviewSelect>>', self.on_card_select)
         
         # Card details frame
-        details_frame = ttk.LabelFrame(container, text="Card Details")
-        details_frame.pack(fill=tk.BOTH, expand=True)
+        details_frame = ttk.LabelFrame(container, text="Card Details", padding=10)
+        details_frame.pack(fill=tk.BOTH, expand=True, pady=(10, 0))
         
+        # Card details text area
         self.card_details = scrolledtext.ScrolledText(
             details_frame,
             wrap=tk.WORD,
@@ -504,56 +597,83 @@ class StripeSnoopGUI(tk.Tk):
         )
         self.card_details.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
-        # Bind selection event
-        self.card_tree.bind("<<TreeviewSelect>>", self.on_card_select)
+        # Bind selection event is already set above with self.card_list
+        # Remove duplicate binding
     
     def on_card_select(self, event):
         """Handle card selection in the database view."""
-        selected_items = self.card_tree.selection()
-        if not selected_items:
+        if not hasattr(self, 'card_list') or not hasattr(self, 'card_details'):
             return
             
-        # Get the selected item's values
-        item = selected_items[0]
-        values = self.card_tree.item(item, 'values')
-        
-        if not values or len(values) < 5:
+        selected = self.card_list.selection()
+        if not selected:
             return
             
         try:
-            # Get the card ID from the first column
-            card_id = int(values[0])
-            
-            # Get the card from the database
-            card = self.db.get_card_by_id(card_id)
-            if not card:
+            # Get the selected item
+            item = self.card_list.item(selected[0])
+            item_values = item['values']
+            if not item_values or len(item_values) < 3:
                 return
                 
-            # Format and display the card details
-            details = []
-            details.append(f"Card Type: {card.card_type or 'Unknown'}")
-            details.append(f"Card Number: {card.get_masked_number()}")
-            details.append(f"Expiration: {card.expiration_date or 'N/A'}")
-            details.append(f"Cardholder: {card.cardholder_name or 'N/A'}")
-            details.append(f"Issuer: {card.issuer or 'Unknown'}")
-            details.append("\nTrack 1 Data:")
-            details.append(card.track1 or "No data")
-            details.append("\nTrack 2 Data:")
-            details.append(card.track2 or "No data")
-            if card.track3:
-                details.append("\nTrack 3 Data:")
-                details.append(card.track3)
+            # Get the card index
+            card_index = int(item_values[0])
+            
+            # Get all cards and find the selected one
+            cards = self.db.get_all_cards()
+            if card_index < 0 or card_index >= len(cards):
+                return
                 
-            self.card_details.config(state=tk.NORMAL)
+            card = cards[card_index]
+            
+            # Display card details
             self.card_details.delete(1.0, tk.END)
-            self.card_details.insert(tk.END, '\n'.join(details))
-            self.card_details.config(state=tk.DISABLED)
+            
+            # Basic card info
+            self.card_details.insert(tk.END, "=== Card Details ===\n\n")
+            
+            # Card number
+            card_number = card.get('card_number', '')
+            if card_number:
+                self.card_details.insert(tk.END, f"Number: {card_number}\n")
+            
+            # Card holder
+            card_holder = card.get('card_holder', '')
+            if card_holder:
+                self.card_details.insert(tk.END, f"Holder: {card_holder}\n")
+            
+            # Expiration
+            expiry = card.get('expiry', '')
+            if expiry:
+                self.card_details.insert(tk.END, f"Expires: {expiry}\n")
+            
+            # Timestamp
+            timestamp = card.get('timestamp', '')
+            if timestamp:
+                self.card_details.insert(tk.END, f"Added: {timestamp}\n")
+            
+            # Track data
+            self.card_details.insert(tk.END, "\n=== Track Data ===\n\n")
+            
+            # Track 1
+            track1 = card.get('track1', '')
+            if track1:
+                self.card_details.insert(tk.END, f"Track 1: {track1}\n\n")
+            
+            # Track 2
+            track2 = card.get('track2', '')
+            if track2:
+                self.card_details.insert(tk.END, f"Track 2: {track2}\n\n")
+            
+            # Track 3
+            track3 = card.get('track3', '')
+            if track3:
+                self.card_details.insert(tk.END, f"Track 3: {track3}\n\n")
             
         except Exception as e:
-            self.card_details.config(state=tk.NORMAL)
+            print(f"Error displaying card details: {e}")
             self.card_details.delete(1.0, tk.END)
-            self.card_details.insert(tk.END, f"Error displaying card details: {str(e)}")
-            self.card_details.config(state=tk.DISABLED)
+            self.card_details.insert(tk.END, f"Error loading card details: {str(e)}")
     
     def _create_about_tab(self):
         """Create the about tab with application information."""
@@ -610,7 +730,7 @@ class StripeSnoopGUI(tk.Tk):
         github_btn = ttk.Button(
             container,
             text="View on GitHub",
-            command=lambda: webbrowser.open("https://github.com/yourusername/stripe-snoop")
+            command=lambda: webbrowser.open("https://github.com/Nsfr750/pysnoop")
         )
         github_btn.pack(pady=(20, 0))
     
@@ -874,19 +994,62 @@ class StripeSnoopGUI(tk.Tk):
         # Schedule the next check
         self.after(100, self.process_messages)
     
+    def _save_card_data(self):
+        """Save the current card data to the database."""
+        if not hasattr(self, 'current_card') or not self.current_card:
+            messagebox.showerror("Error", "No card data to save")
+            return
+            
+        try:
+            # Create a new card object with all available data
+            card_data = {
+                'track1': self.current_card.get('track1', ''),
+                'track2': self.current_card.get('track2', ''),
+                'track3': self.current_card.get('track3', ''),
+                'card_number': self.current_card.get('card_number', ''),
+                'card_holder': self.current_card.get('card_holder', ''),
+                'expiry': self.current_card.get('expiry', ''),
+                'timestamp': datetime.datetime.now().isoformat()
+            }
+            
+            # Add the card to the database
+            self.db.add_card(card_data)
+            
+            # Update the card list
+            if hasattr(self, '_populate_card_list'):
+                self._populate_card_list()
+            
+            # Disable the save button if it exists
+            if hasattr(self, 'save_btn'):
+                self.save_btn.config(state=tk.DISABLED)
+            
+            messagebox.showinfo("Success", "Card data saved to database")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save card data: {str(e)}")
+            print(f"Error saving card data: {e}")
+    
     def _handle_card_data(self, card_data):
         """Handle card data received from the reader."""
         try:
-            # Update the UI with the card data
-            self.track_text.delete(1.0, tk.END)
+            # Store the raw card data
+            self.current_card = card_data
             
-            # Display track data
-            if 'track1' in card_data:
-                self.track_text.insert(tk.END, "Track 1: " + card_data['track1'] + "\n\n")
-            if 'track2' in card_data:
-                self.track_text.insert(tk.END, "Track 2: " + card_data['track2'] + "\n\n")
-            if 'track3' in card_data:
-                self.track_text.insert(tk.END, "Track 3: " + card_data['track3'] + "\n\n")
+            # Update the UI with the card data
+            if hasattr(self, 'track_text'):
+                self.track_text.delete(1.0, tk.END)
+                
+                # Display track data
+                if 'track1' in card_data and card_data['track1']:
+                    self.track_text.insert(tk.END, "Track 1: " + card_data['track1'] + "\n\n")
+                if 'track2' in card_data and card_data['track2']:
+                    self.track_text.insert(tk.END, "Track 2: " + card_data['track2'] + "\n\n")
+                if 'track3' in card_data and card_data['track3']:
+                    self.track_text.insert(tk.END, "Track 3: " + card_data['track3'] + "\n\n")
+            
+            # Enable the save button if it exists
+            if hasattr(self, 'save_btn'):
+                self.save_btn.config(state=tk.NORMAL)
                 
             # Parse and display card information
             if 'track1' in card_data and card_data['track1']:
@@ -907,14 +1070,18 @@ class StripeSnoopGUI(tk.Tk):
                             exp_formatted = f"{exp_date[2:4]}/{exp_date[0:2]}"
                             
                             # Update the UI
-                            self.card_number_var.set(f"**** **** **** {card_number[-4:]}" if len(card_number) > 4 else card_number)
-                            self.card_holder_var.set(f"{first_name} {last_name}".strip())
-                            self.expiry_var.set(exp_formatted)
+                            if hasattr(self, 'card_number_var'):
+                                self.card_number_var.set(f"**** **** **** {card_number[-4:]}" if len(card_number) > 4 else card_number)
+                            if hasattr(self, 'card_holder_var'):
+                                self.card_holder_var.set(f"{first_name} {last_name}".strip())
+                            if hasattr(self, 'expiry_var'):
+                                self.expiry_var.set(exp_formatted)
                 except Exception as e:
                     print(f"Error parsing track 1 data: {e}")
             
-            # Enable save button
-            self.save_btn.config(state=tk.NORMAL)
+            # Enable save button if it exists
+            if hasattr(self, 'save_btn'):
+                self.save_btn.config(state=tk.NORMAL)
             
         except Exception as e:
             messagebox.showerror("Error", f"Error processing card data: {str(e)}")
@@ -944,12 +1111,14 @@ class StripeSnoopGUI(tk.Tk):
 def main():
     """Main entry point for the application."""
     try:
-        app = StripeSnoopGUI()
+        app = PySnoopGUI()
+        app.title("PySnoop")
         app.protocol("WM_DELETE_WINDOW", app.on_closing)
         app.mainloop()
     except Exception as e:
-        messagebox.showerror("Fatal Error", f"Application error: {str(e)}")
-        raise
+        messagebox.showerror("Fatal Error", f"An unexpected error occurred: {str(e)}")
+        print(f"Fatal error: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
