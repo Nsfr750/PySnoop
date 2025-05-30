@@ -105,7 +105,7 @@ class MSR605Reader(Reader):
                 print(f"Initializing MSR605 reader on {self.com_port} at {self.baud_rate} baud")
             
             # Close port if already open
-            if self.serial and self.serial.is_open:
+            if hasattr(self, 'serial') and self.serial and self.serial.is_open:
                 self.serial.close()
             
             # Open serial port
@@ -131,6 +131,24 @@ class MSR605Reader(Reader):
             if not response:
                 if self.verbose:
                     print("No response from reader")
+                self.close()
+                return False
+                
+            # If we got here, initialization was successful
+            self.initialized = True
+            if self.verbose:
+                print(f"Successfully initialized MSR605 on {self.com_port}")
+            return True
+            
+        except serial.SerialException as e:
+            if self.verbose:
+                print(f"Serial port error: {str(e)}")
+            self.close()
+            return False
+            
+        except Exception as e:
+            if self.verbose:
+                print(f"Error initializing MSR605: {str(e)}")
                 import traceback
                 print(traceback.format_exc())
             self.close()
