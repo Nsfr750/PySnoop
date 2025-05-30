@@ -42,7 +42,7 @@ python pysnoop_gui.py
 ### Command Line Mode
 
 ```bash
-python main.py [options]
+python pysnoop.py [options]
 ```
 
 ## Supported Devices
