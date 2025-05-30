@@ -9,12 +9,15 @@ from tkinter import ttk, scrolledtext, messagebox, filedialog
 from typing import Dict, List, Optional, Any, Union
 import os
 import sys
-import json
-import threading
 import queue
+import threading
+import json
+import os
+import sys
 from pathlib import Path
 from datetime import datetime
 import appdirs
+import serial.tools.list_ports
 
 # Import core functionality
 from card import Card
@@ -152,6 +155,71 @@ class StripeSnoopGUI(tk.Tk):
         )
         status_bar.pack(fill=tk.X, pady=(5, 0))
     
+    def init_reader(self):
+        """Initialize the selected card reader."""
+        reader_type = self.reader_var.get()
+        com_port = self.com_port_var.get()
+        
+        if not com_port:
+            messagebox.showerror("Error", "Please select a COM port")
+            return
+            
+        try:
+            if reader_type == "MSR605":
+                from msr605_serial import MSR605Reader
+                self.reader = MSR605Reader(com_port=com_port)
+                if self.reader.init_reader():
+                    messagebox.showinfo("Success", f"Successfully initialized {reader_type} on {com_port}")
+                    self.read_btn.config(state=tk.NORMAL)
+                    self.stop_btn.config(state=tk.DISABLED)
+                else:
+                    messagebox.showerror("Error", f"Failed to initialize {reader_type} on {com_port}")
+                    self.read_btn.config(state=tk.DISABLED)
+                    self.stop_btn.config(state=tk.DISABLED)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to initialize reader: {str(e)}")
+            self.read_btn.config(state=tk.DISABLED)
+            self.stop_btn.config(state=tk.DISABLED)
+    
+    def read_card(self):
+        """Read data from the card using the initialized reader."""
+        if not self.reader or not hasattr(self.reader, 'read'):
+            messagebox.showerror("Error", "Reader not properly initialized")
+            return
+            
+        try:
+            self.track_text.delete(1.0, tk.END)  # Clear previous data
+            self.track_text.insert(tk.END, "Swipe card now...\n")
+            self.read_btn.config(state=tk.DISABLED)
+            self.stop_btn.config(state=tk.NORMAL)
+            
+            # Read card data in a separate thread to avoid freezing the UI
+            def read_thread():
+                try:
+                    card_data = self.reader.read()
+                    if card_data:
+                        self.message_queue.put(('data', card_data))
+                    else:
+                        self.message_queue.put(('error', "No data read from card"))
+                except Exception as e:
+                    self.message_queue.put(('error', f"Error reading card: {str(e)}"))
+                finally:
+                    self.message_queue.put(('done', None))
+            
+            threading.Thread(target=read_thread, daemon=True).start()
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to read card: {str(e)}")
+            self.read_btn.config(state=tk.NORMAL)
+            self.stop_btn.config(state=tk.DISABLED)
+    
+    def stop_reading(self):
+        """Stop the current card reading operation."""
+        if hasattr(self.reader, 'cancel_read'):
+            self.reader.cancel_read()
+        self.read_btn.config(state=tk.NORMAL)
+        self.stop_btn.config(state=tk.DISABLED)
+    
     def _create_reader_tab(self):
         """Create the card reader tab."""
         tab = ttk.Frame(self.notebook)
@@ -165,29 +233,88 @@ class StripeSnoopGUI(tk.Tk):
         ctrl_frame = ttk.LabelFrame(container, text="Reader Controls", padding=10)
         ctrl_frame.pack(fill=tk.X, pady=(0, 10))
         
-        # Reader selection
+        # Configure grid weights
+        ctrl_frame.columnconfigure(1, weight=1)
+        
+        # Row 0: Reader selection
         ttk.Label(ctrl_frame, text="Reader:").grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
         self.reader_var = tk.StringVar()
         self.reader_combo = ttk.Combobox(
             ctrl_frame,
             textvariable=self.reader_var,
-            values=["MSR605", "Serial", "Direct"],
+            values=["MSR605"],  # Only MSR605 is supported for now
             state="readonly",
             width=15
         )
         self.reader_combo.set("MSR605")  # Default to MSR605
         self.reader_combo.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
         
-        # COM port selection for MSR605
-        self.com_port_var = tk.StringVar()
-        self.com_port_combo = ttk.Combobox(
+        # Initialize button
+        self.init_btn = ttk.Button(
             ctrl_frame,
+            text="Initialize Reader",
+            command=self.init_reader,
+            style="Accent.TButton"
+        )
+        self.init_btn.grid(row=0, column=2, padx=5, pady=5, sticky=tk.W)
+        
+        # Row 1: COM port selection
+        ttk.Label(ctrl_frame, text="COM Port:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
+        
+        # COM port selection frame
+        com_frame = ttk.Frame(ctrl_frame)
+        com_frame.grid(row=1, column=1, columnspan=2, sticky=tk.W+tk.E, pady=5)
+        
+        # COM port variable and combobox
+        self.com_port_var = tk.StringVar()
+        
+        def get_available_ports():
+            """Get a list of available COM ports."""
+            ports = []
+            try:
+                # Try to get detailed port information
+                ports = [port.device for port in serial.tools.list_ports.comports()]
+                if not ports:  # If no ports found, try alternative method
+                    import winreg
+                    with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'HARDWARE\\DEVICEMAP\\SERIALCOMM') as key:
+                        for i in range(1024):
+                            try:
+                                port = winreg.EnumValue(key, i)[1]
+                                if port not in ports:
+                                    ports.append(port)
+                            except WindowsError:
+                                break
+            except Exception as e:
+                print(f"Error detecting COM ports: {e}")
+            return sorted(ports, key=lambda x: int(x[3:]) if x[3:].isdigit() else float('inf'))
+        
+        # Create COM port dropdown
+        self.com_port_combo = ttk.Combobox(
+            com_frame,
             textvariable=self.com_port_var,
-            values=[],
+            values=get_available_ports(),
             state="readonly",
             width=15
         )
-        self.com_port_combo.grid(row=0, column=2, sticky=tk.W, padx=5, pady=5)
+        self.com_port_combo.pack(side=tk.LEFT, padx=(0, 5))
+        
+        # Add refresh button
+        def refresh_ports():
+            ports = get_available_ports()
+            self.com_port_combo['values'] = ports
+            if ports and not self.com_port_var.get():
+                self.com_port_var.set(ports[0])
+        
+        refresh_btn = ttk.Button(
+            com_frame,
+            text="🔄",
+            width=3,
+            command=refresh_ports
+        )
+        refresh_btn.pack(side=tk.LEFT)
+        
+        # Auto-refresh ports on tab open
+        refresh_ports()
         
         # Initialize button
         self.init_btn = ttk.Button(
@@ -238,6 +365,60 @@ class StripeSnoopGUI(tk.Tk):
         self.card_type_var = tk.StringVar(value="Unknown")
         ttk.Label(info_frame, textvariable=self.card_type_var, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
     
+    def browse_database(self):
+        """Open a file dialog to select a database file."""
+        initial_dir = self.settings.get('last_directory', str(Path.home()))
+        file_path = filedialog.askopenfilename(
+            title="Select Database File",
+            filetypes=[("SQLite Database", "*.db"), ("JSON Database", "*.json"), ("All Files", "*.*")],
+            initialdir=initial_dir
+        )
+        if file_path:
+            self.db_path_var.set(file_path)
+            self.settings['last_directory'] = str(Path(file_path).parent)
+            self.save_settings()
+    
+    def load_database(self):
+        """Load the selected database file."""
+        db_path = self.db_path_var.get().strip()
+        if not db_path:
+            messagebox.showerror("Error", "Please select a database file")
+            return
+            
+        try:
+            if db_path.endswith('.json'):
+                # Load JSON database
+                with open(db_path, 'r') as f:
+                    data = json.load(f)
+                self.db.load_from_dict(data)
+            else:
+                # Load SQLite database
+                self.db.load(db_path)
+                
+            self._populate_card_list()
+            messagebox.showinfo("Success", f"Successfully loaded database from {db_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load database: {str(e)}")
+    
+    def _populate_card_list(self):
+        """Populate the card list with data from the database."""
+        # Clear existing items
+        for item in self.card_tree.get_children():
+            self.card_tree.delete(item)
+            
+        # Add cards from database
+        for card in self.db.get_all_cards():
+            self.card_tree.insert(
+                "", "end",
+                values=(
+                    card.id,
+                    card.card_type or "",
+                    card.get_masked_number(),
+                    card.cardholder_name or "",
+                    card.expiration_date or ""
+                )
+            )
+    
     def _create_database_tab(self):
         """Create the database management tab."""
         tab = ttk.Frame(self.notebook)
@@ -247,7 +428,7 @@ class StripeSnoopGUI(tk.Tk):
         container = ttk.Frame(tab, padding=10)
         container.pack(fill=tk.BOTH, expand=True)
         
-        # Database controls
+        # Controls frame
         ctrl_frame = ttk.Frame(container)
         ctrl_frame.pack(fill=tk.X, pady=(0, 10))
         
@@ -325,6 +506,113 @@ class StripeSnoopGUI(tk.Tk):
         
         # Bind selection event
         self.card_tree.bind("<<TreeviewSelect>>", self.on_card_select)
+    
+    def on_card_select(self, event):
+        """Handle card selection in the database view."""
+        selected_items = self.card_tree.selection()
+        if not selected_items:
+            return
+            
+        # Get the selected item's values
+        item = selected_items[0]
+        values = self.card_tree.item(item, 'values')
+        
+        if not values or len(values) < 5:
+            return
+            
+        try:
+            # Get the card ID from the first column
+            card_id = int(values[0])
+            
+            # Get the card from the database
+            card = self.db.get_card_by_id(card_id)
+            if not card:
+                return
+                
+            # Format and display the card details
+            details = []
+            details.append(f"Card Type: {card.card_type or 'Unknown'}")
+            details.append(f"Card Number: {card.get_masked_number()}")
+            details.append(f"Expiration: {card.expiration_date or 'N/A'}")
+            details.append(f"Cardholder: {card.cardholder_name or 'N/A'}")
+            details.append(f"Issuer: {card.issuer or 'Unknown'}")
+            details.append("\nTrack 1 Data:")
+            details.append(card.track1 or "No data")
+            details.append("\nTrack 2 Data:")
+            details.append(card.track2 or "No data")
+            if card.track3:
+                details.append("\nTrack 3 Data:")
+                details.append(card.track3)
+                
+            self.card_details.config(state=tk.NORMAL)
+            self.card_details.delete(1.0, tk.END)
+            self.card_details.insert(tk.END, '\n'.join(details))
+            self.card_details.config(state=tk.DISABLED)
+            
+        except Exception as e:
+            self.card_details.config(state=tk.NORMAL)
+            self.card_details.delete(1.0, tk.END)
+            self.card_details.insert(tk.END, f"Error displaying card details: {str(e)}")
+            self.card_details.config(state=tk.DISABLED)
+    
+    def _create_about_tab(self):
+        """Create the about tab with application information."""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="About")
+        
+        # Main container with padding
+        container = ttk.Frame(tab, padding=20)
+        container.pack(fill=tk.BOTH, expand=True)
+        
+        # Application title
+        title_label = ttk.Label(
+            container,
+            text="Stripe Snoop 2.0",
+            font=('Helvetica', 16, 'bold')
+        )
+        title_label.pack(pady=(0, 10))
+        
+        # Version information
+        version_label = ttk.Label(
+            container,
+            text="Version 2.0.0",
+            font=('Helvetica', 10)
+        )
+        version_label.pack(pady=(0, 20))
+        
+        # Description
+        desc_text = (
+            "A modern application for reading and managing magnetic stripe card data.\n\n"
+            "Features:\n"
+            "• Read magnetic stripe cards using compatible readers\n"
+            "• View and manage card data in a database\n"
+            "• Export/Import card data in multiple formats\n"
+            "• User-friendly interface with theming support"
+        )
+        desc_label = ttk.Label(
+            container,
+            text=desc_text,
+            justify=tk.LEFT,
+            wraplength=500
+        )
+        desc_label.pack(pady=(0, 20), anchor='w')
+        
+        # Copyright and license
+        copyright_label = ttk.Label(
+            container,
+            text="© 2023 Stripe Snoop Project\nMIT License",
+            font=('Helvetica', 8),
+            foreground='gray'
+        )
+        copyright_label.pack(side=tk.BOTTOM, pady=(10, 0))
+        
+        # GitHub link
+        github_btn = ttk.Button(
+            container,
+            text="View on GitHub",
+            command=lambda: webbrowser.open("https://github.com/yourusername/stripe-snoop")
+        )
+        github_btn.pack(pady=(20, 0))
     
     def _create_settings_tab(self):
         """Create the settings tab."""
@@ -557,6 +845,79 @@ class StripeSnoopGUI(tk.Tk):
         
         # Save the updated settings
         self.save_settings()
+    
+    def process_messages(self):
+        """Process messages from the message queue."""
+        try:
+            while True:
+                try:
+                    # Get message from queue (non-blocking)
+                    msg_type, data = self.message_queue.get_nowait()
+                    
+                    if msg_type == 'data':
+                        # Handle card data
+                        self._handle_card_data(data)
+                    elif msg_type == 'error':
+                        # Handle error message
+                        messagebox.showerror("Error", data)
+                    elif msg_type == 'done':
+                        # Reading operation completed
+                        self.read_btn.config(state=tk.NORMAL)
+                        self.stop_btn.config(state=tk.DISABLED)
+                        
+                except queue.Empty:
+                    break
+                    
+        except Exception as e:
+            messagebox.showerror("Error", f"Error processing messages: {str(e)}")
+            
+        # Schedule the next check
+        self.after(100, self.process_messages)
+    
+    def _handle_card_data(self, card_data):
+        """Handle card data received from the reader."""
+        try:
+            # Update the UI with the card data
+            self.track_text.delete(1.0, tk.END)
+            
+            # Display track data
+            if 'track1' in card_data:
+                self.track_text.insert(tk.END, "Track 1: " + card_data['track1'] + "\n\n")
+            if 'track2' in card_data:
+                self.track_text.insert(tk.END, "Track 2: " + card_data['track2'] + "\n\n")
+            if 'track3' in card_data:
+                self.track_text.insert(tk.END, "Track 3: " + card_data['track3'] + "\n\n")
+                
+            # Parse and display card information
+            if 'track1' in card_data and card_data['track1']:
+                # Try to parse track 1 data
+                try:
+                    # Format: %B1234567890123456^CARDHOLDER/NAME^YYMM...
+                    track1 = card_data['track1']
+                    if track1.startswith('%B'):
+                        parts = track1.split('^')
+                        if len(parts) >= 3:
+                            card_number = parts[0][2:].strip()  # Remove %B
+                            name_parts = parts[1].split('/')
+                            last_name = name_parts[0].strip()
+                            first_name = name_parts[1].strip() if len(name_parts) > 1 else ''
+                            exp_date = parts[2][:4]  # YYMM format
+                            
+                            # Format the expiration date as MM/YY
+                            exp_formatted = f"{exp_date[2:4]}/{exp_date[0:2]}"
+                            
+                            # Update the UI
+                            self.card_number_var.set(f"**** **** **** {card_number[-4:]}" if len(card_number) > 4 else card_number)
+                            self.card_holder_var.set(f"{first_name} {last_name}".strip())
+                            self.expiry_var.set(exp_formatted)
+                except Exception as e:
+                    print(f"Error parsing track 1 data: {e}")
+            
+            # Enable save button
+            self.save_btn.config(state=tk.NORMAL)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error processing card data: {str(e)}")
     
     def on_closing(self):
         """Handle application closing."""
