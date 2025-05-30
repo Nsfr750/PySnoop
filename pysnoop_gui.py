@@ -6,12 +6,13 @@ A modern Tkinter-based GUI for the PySnoop magstripe card reader application.
 
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox, filedialog
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, List, Optional, Any, Union, Callable
 import os
 import sys
 import queue
 import threading
 import json
+import csv
 from pathlib import Path
 from datetime import datetime
 import appdirs
@@ -19,6 +20,7 @@ import serial.tools.list_ports
 
 # Import local modules
 from about import create_about_tab
+from menu import MenuBar, show_about, show_documentation, show_preferences
 
 # Import core functionality
 from card import Card
@@ -118,7 +120,12 @@ class PySnoopGUI(tk.Tk):
         """Configure application styles."""
         if THEMED_UI:
             self.style = ThemedStyle(self)
-            self.style.set_theme("arc")  # Use a nice theme if available
+            # Set initial theme from settings or default to 'arc'
+            initial_theme = self.settings.get('theme', 'arc')
+            try:
+                self.style.set_theme(initial_theme)
+            except:
+                self.style.set_theme('arc')  # Fallback to 'arc' if theme not found
         else:
             self.style = ttk.Style()
         
@@ -130,9 +137,32 @@ class PySnoopGUI(tk.Tk):
         self.style.map("Accent.TButton",
                       foreground=[('active', 'white'), ('!disabled', 'white')],
                       background=[('active', '#0052cc'), ('!disabled', '#0066ff')])
+                      
+    def _on_theme_change(self, *args):
+        """Handle theme change event."""
+        if not hasattr(self, 'style') or not hasattr(self.style, 'theme_use'):
+            return
+            
+        new_theme = self.theme_var.get()
+        try:
+            self.style.theme_use(new_theme)
+            # Update settings
+            self.settings['theme'] = new_theme
+            self.save_settings()
+        except Exception as e:
+            messagebox.showerror("Theme Error", f"Failed to apply theme: {str(e)}")
+            # Revert to previous theme
+            self.theme_var.set(self.style.theme_use())
     
     def _create_widgets(self):
         """Create and arrange all UI widgets."""
+        # Create menu bar
+        self.menu_bar = MenuBar(self)
+        self.config(menu=self.menu_bar)
+        
+        # Set up menu callbacks
+        self._setup_menu_callbacks()
+        
         # Main container
         main_container = ttk.Frame(self)
         main_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -250,21 +280,12 @@ class PySnoopGUI(tk.Tk):
         self.reader_combo.set("MSR605")  # Default to MSR605
         self.reader_combo.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
         
-        # Initialize button
-        self.init_btn = ttk.Button(
-            ctrl_frame,
-            text="Initialize Reader",
-            command=self.init_reader,
-            style="Accent.TButton"
-        )
-        self.init_btn.grid(row=0, column=2, padx=5, pady=5, sticky=tk.W)
-        
         # Row 1: COM port selection
         ttk.Label(ctrl_frame, text="COM Port:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
         
         # COM port selection frame
         com_frame = ttk.Frame(ctrl_frame)
-        com_frame.grid(row=1, column=1, columnspan=2, sticky=tk.W+tk.E, pady=5)
+        com_frame.grid(row=1, column=1, columnspan=3, sticky=tk.W+tk.E, pady=5)
         
         # COM port variable and combobox
         self.com_port_var = tk.StringVar()
@@ -324,7 +345,7 @@ class PySnoopGUI(tk.Tk):
             command=self.init_reader,
             style="Accent.TButton"
         )
-        self.init_btn.grid(row=0, column=3, padx=5, pady=5)
+        self.init_btn.grid(row=0, column=2, padx=5, pady=5)
         
         # Read button
         self.read_btn = ttk.Button(
@@ -467,26 +488,112 @@ class PySnoopGUI(tk.Tk):
             messagebox.showerror("Error", f"Failed to load database: {str(e)}")
             print(f"Error loading database: {e}")
     
-    def _export_cards(self):
-        """Export all cards to a file."""
-        try:
-            # Ask for save location
-            file_path = filedialog.asksaveasfilename(
-                defaultextension=".json",
-                filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
-                title="Export Cards"
-            )
+    def _import_cards(self):
+        """Import cards from a file."""
+        file_path = filedialog.askopenfilename(
+            filetypes=[
+                ("JSON files", "*.json"),
+                ("CSV files", "*.csv"),
+                ("All files", "*.*")
+            ],
+            initialdir=self.settings.get('last_directory', str(Path.home()))
+        )
+        
+        if not file_path:
+            return
             
-            if not file_path:
-                return  # User cancelled
-                
+        try:
+            imported = 0
+            if file_path.lower().endswith('.csv'):
+                # Import from CSV
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        # Convert CSV row to card format
+                        card = {
+                            'track1': row.get('track1', ''),
+                            'track2': row.get('track2', ''),
+                            'track3': row.get('track3', ''),
+                            'card_number': row.get('card_number', ''),
+                            'card_holder': row.get('card_holder', ''),
+                            'expiry': row.get('expiry', ''),
+                            'timestamp': row.get('timestamp', datetime.now().isoformat())
+                        }
+                        self.db.add_card(card)
+                        imported += 1
+            else:
+                # Import from JSON
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    cards = json.load(f)
+                    if isinstance(cards, list):
+                        for card in cards:
+                            self.db.add_card(card)
+                            imported += 1
+                    else:
+                        # Single card
+                        self.db.add_card(cards)
+                        imported = 1
+            
+            # Update last directory
+            self.settings['last_directory'] = str(Path(file_path).parent)
+            self.save_settings()
+            
+            # Refresh the card list
+            self._populate_card_list()
+            
+            messagebox.showinfo("Success", f"Successfully imported {imported} cards from {file_path}")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to import cards: {str(e)}")
+    
+    def _export_cards(self, export_format='json'):
+        """Export all cards to a file.
+        
+        Args:
+            export_format (str): The format to export to ('json' or 'csv')
+        """
+        if export_format not in ['json', 'csv']:
+            raise ValueError("Unsupported export format")
+            
+        file_ext = f".{export_format}"
+        file_types = [
+            (f"{export_format.upper()} files", f"*{file_ext}"),
+            ("All files", "*.*")
+        ]
+        
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=file_ext,
+            filetypes=file_types,
+            initialdir=self.settings.get('last_directory', str(Path.home()))
+        )
+        
+        if not file_path:
+            return
+            
+        try:
             # Get all cards
             cards = self.db.get_all_cards()
             
-            # Save to file
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(cards, f, indent=2)
+            if export_format == 'csv':
+                # Export to CSV
+                if not cards:
+                    fieldnames = ['track1', 'track2', 'track3', 'card_number', 'card_holder', 'expiry', 'timestamp']
+                else:
+                    fieldnames = list(cards[0].keys())
                 
+                with open(file_path, 'w', newline='', encoding='utf-8') as f:
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(cards)
+            else:
+                # Export to JSON
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(cards, f, indent=2, ensure_ascii=False)
+            
+            # Update last directory
+            self.settings['last_directory'] = str(Path(file_path).parent)
+            self.save_settings()
+            
             messagebox.showinfo("Success", f"Successfully exported {len(cards)} cards to {file_path}")
             
         except Exception as e:
@@ -518,6 +625,26 @@ class PySnoopGUI(tk.Tk):
         ctrl_frame = ttk.LabelFrame(container, text="Database Controls", padding=10)
         ctrl_frame.pack(fill=tk.X, pady=(0, 10))
         
+        # Database path frame
+        path_frame = ttk.Frame(ctrl_frame)
+        path_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        # Database path label and entry
+        ttk.Label(path_frame, text="Database Path:").pack(side=tk.LEFT, padx=(0, 5))
+        
+        # Create the database path variable and entry
+        self.db_path_var = tk.StringVar()
+        db_entry = ttk.Entry(path_frame, textvariable=self.db_path_var, width=50)
+        db_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        
+        # Browse button
+        browse_btn = ttk.Button(
+            path_frame,
+            text="Browse...",
+            command=self.browse_database
+        )
+        browse_btn.pack(side=tk.LEFT)
+        
         # Buttons frame
         btn_frame = ttk.Frame(ctrl_frame)
         btn_frame.pack(fill=tk.X, pady=5)
@@ -530,13 +657,28 @@ class PySnoopGUI(tk.Tk):
         )
         load_btn.pack(side=tk.LEFT, padx=5)
         
-        # Export button
-        export_btn = ttk.Button(
+        # Import button
+        import_btn = ttk.Button(
             btn_frame,
-            text="Export Cards...",
-            command=self._export_cards
+            text="Import Cards...",
+            command=self._import_cards
         )
-        export_btn.pack(side=tk.LEFT, padx=5)
+        import_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Export button
+        export_menu = tk.Menubutton(btn_frame, text="Export Cards...")
+        export_menu.pack(side=tk.LEFT, padx=5)
+        export_menu.menu = tk.Menu(export_menu, tearoff=0)
+        export_menu["menu"] = export_menu.menu
+        
+        export_menu.menu.add_command(
+            label="Export to JSON...",
+            command=lambda: self._export_cards('json')
+        )
+        export_menu.menu.add_command(
+            label="Export to CSV...",
+            command=lambda: self._export_cards('csv')
+        )
         
         # Clear button
         clear_btn = ttk.Button(
@@ -676,30 +818,103 @@ class PySnoopGUI(tk.Tk):
             self.card_details.delete(1.0, tk.END)
             self.card_details.insert(tk.END, f"Error loading card details: {str(e)}")
     
+    def _setup_menu_callbacks(self):
+        """Set up menu item callbacks."""
+        # File menu
+        self.menu_bar.set_callback('file', 'new', self._new_database)
+        self.menu_bar.set_callback('file', 'open', self.load_database)
+        self.menu_bar.set_callback('file', 'save', self._save_database)
+        self.menu_bar.set_callback('file', 'save_as', self._save_database_as)
+        self.menu_bar.set_callback('file', 'exit', self.on_closing)
+        
+        # Edit menu
+        self.menu_bar.set_callback('edit', 'preferences', show_preferences)
+        
+        # View menu
+        self.menu_bar.set_callback('view', 'zoom_in', self._zoom_in)
+        self.menu_bar.set_callback('view', 'zoom_out', self._zoom_out)
+        self.menu_bar.set_callback('view', 'reset_zoom', self._reset_zoom)
+        
+        # Help menu
+        self.menu_bar.set_callback('help', 'about', show_about)
+        self.menu_bar.set_callback('help', 'documentation', show_documentation)
+    
+    def _new_database(self):
+        """Create a new database."""
+        if messagebox.askyesno("New Database", "Create a new database? Any unsaved changes will be lost."):
+            self.db = CardStorage()
+            self._populate_card_list()
+            self.status_var.set("Created new database")
+    
+    def _save_database(self):
+        """Save the current database."""
+        if not hasattr(self, 'db_file') or not self.db_file:
+            self._save_database_as()
+        else:
+            try:
+                self.db.save(self.db_file)
+                self.status_var.set(f"Database saved to {self.db_file}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to save database: {str(e)}")
+    
+    def _save_database_as(self):
+        """Save the current database to a new file."""
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+        )
+        if file_path:
+            self.db_file = file_path
+            self._save_database()
+    
+    def _zoom_in(self):
+        """Increase the font size."""
+        self._adjust_font_size(1)
+    
+    def _zoom_out(self):
+        """Decrease the font size."""
+        self._adjust_font_size(-1)
+    
+    def _reset_zoom(self):
+        """Reset the font size to default."""
+        if hasattr(self, '_current_font_size'):
+            self._adjust_font_size(-self._current_font_size + 10)  # Reset to 10pt
+    
+    def _adjust_font_size(self, delta):
+        """Adjust the font size by the given delta."""
+        if not hasattr(self, '_current_font_size'):
+            self._current_font_size = 10  # Default font size
+        
+        self._current_font_size = max(8, min(24, self._current_font_size + delta))
+        self.style.configure('.', font=('TkDefaultFont', self._current_font_size))
+        self.status_var.set(f"Font size: {self._current_font_size}pt")
+    
     def _create_about_tab(self):
         """Create the about tab with application information."""
-        tab = create_about_tab(self.notebook)
-        self.notebook.add(tab, text="About")
+        about_tab = create_about_tab(self.notebook)
+        self.notebook.add(about_tab, text="About")
     
     def _create_settings_tab(self):
         """Create the settings tab."""
         tab = ttk.Frame(self.notebook)
         self.notebook.add(tab, text="Settings")
         
-        # Main container with padding and scrolling
-        container = ttk.Frame(tab)
-        container.pack(fill=tk.BOTH, expand=True)
+        # Create main container with padding and scrolling
+        main_frame = ttk.Frame(tab)
+        main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Canvas and scrollbar for scrolling content
-        canvas = tk.Canvas(container)
-        scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+        # Create a canvas for scrolling
+        canvas = tk.Canvas(main_frame)
+        scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
         scrollable_frame = ttk.Frame(canvas)
         
+        # Configure the canvas scrolling
         scrollable_frame.bind(
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
         
+        # Set up the canvas and scrollbar
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
         
@@ -728,11 +943,15 @@ class PySnoopGUI(tk.Tk):
         theme_combo = ttk.Combobox(
             theme_frame,
             textvariable=self.theme_var,
-            values=["default", "light", "dark", "classic"],
+            values=self.style.theme_names() if hasattr(self.style, 'theme_names') else ["default"],
             state="readonly",
             width=15
         )
         theme_combo.pack(side=tk.LEFT)
+        
+        # Bind theme change
+        if hasattr(self.style, 'theme_use'):
+            self.theme_var.trace('w', self._on_theme_change)
         
         # Application section
         ttk.Label(
