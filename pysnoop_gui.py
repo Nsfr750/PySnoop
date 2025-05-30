@@ -174,6 +174,7 @@ class PySnoopGUI(tk.Tk):
         # Create tabs
         self._create_reader_tab()
         self._create_database_tab()
+        self._create_c10_tab()
         self._create_settings_tab()
         self._create_about_tab()
         
@@ -649,10 +650,22 @@ class PySnoopGUI(tk.Tk):
         btn_frame = ttk.Frame(ctrl_frame)
         btn_frame.pack(fill=tk.X, pady=5)
         
+        # Create New Database button
+        new_db_btn = ttk.Button(
+            btn_frame,
+            text="New Database",
+            command=self._new_database,
+            style="Accent.TButton"
+        )
+        new_db_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Separator
+        ttk.Separator(btn_frame, orient='vertical').pack(side=tk.LEFT, fill='y', padx=5)
+        
         # Load button
         load_btn = ttk.Button(
             btn_frame,
-            text="Load Cards...",
+            text="Load Database...",
             command=self.load_database
         )
         load_btn.pack(side=tk.LEFT, padx=5)
@@ -841,10 +854,29 @@ class PySnoopGUI(tk.Tk):
     
     def _new_database(self):
         """Create a new database."""
-        if messagebox.askyesno("New Database", "Create a new database? Any unsaved changes will be lost."):
+        if messagebox.askyesno(
+            "New Database",
+            "This will clear all current card data. Are you sure you want to create a new database?",
+            icon='warning'
+        ):
+            # Clear the current database
             self.db = CardStorage()
-            self._populate_card_list()
-            self.status_var.set("Created new database")
+            
+            # Clear the database path
+            if hasattr(self, 'db_path_var'):
+                self.db_path_var.set('')
+            
+            # Clear the card list
+            if hasattr(self, 'card_list'):
+                self.card_list.delete(*self.card_list.get_children())
+            
+            # Clear any selected card details
+            if hasattr(self, 'card_details'):
+                self.card_details.delete(1.0, tk.END)
+            
+            # Update status
+            self.status_var.set("Created new empty database")
+            messagebox.showinfo("Success", "Created a new empty database")
     
     def _save_database(self):
         """Save the current database."""
@@ -889,10 +921,167 @@ class PySnoopGUI(tk.Tk):
         self.style.configure('.', font=('TkDefaultFont', self._current_font_size))
         self.status_var.set(f"Font size: {self._current_font_size}pt")
     
+    def _create_c10_tab(self):
+        """Create the C10 validation tab."""
+        tab = ttk.Frame(self.notebook, padding=10)
+        self.notebook.add(tab, text="C10 Validator")
+        
+        # Main container
+        container = ttk.Frame(tab)
+        container.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # Title
+        title_label = ttk.Label(
+            container,
+            text="C10 (Luhn) Validator",
+            font=('Helvetica', 12, 'bold')
+        )
+        title_label.pack(pady=(0, 15))
+        
+        # Input frame
+        input_frame = ttk.LabelFrame(container, text="Card Number", padding=10)
+        input_frame.pack(fill=tk.X, pady=5)
+        
+        # Card number entry
+        self.c10_card_var = tk.StringVar()
+        self.c10_entry = ttk.Entry(
+            input_frame,
+            textvariable=self.c10_card_var,
+            font=('Courier', 12),
+            width=30
+        )
+        self.c10_entry.pack(fill=tk.X, padx=5, pady=5)
+        self.c10_entry.bind('<KeyRelease>', self._on_c10_input_change)
+        
+        # Buttons frame
+        btn_frame = ttk.Frame(container)
+        btn_frame.pack(pady=10)
+        
+        # Validate button
+        validate_btn = ttk.Button(
+            btn_frame,
+            text="Validate C10",
+            command=self._validate_c10,
+            style="Accent.TButton"
+        )
+        validate_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Clear button
+        clear_btn = ttk.Button(
+            btn_frame,
+            text="Clear",
+            command=self._clear_c10_input
+        )
+        clear_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Results frame
+        results_frame = ttk.LabelFrame(container, text="Results", padding=10)
+        results_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Results text
+        self.c10_results = scrolledtext.ScrolledText(
+            results_frame,
+            height=8,
+            wrap=tk.WORD,
+            font=('Consolas', 10),
+            state='disabled'
+        )
+        self.c10_results.pack(fill=tk.BOTH, expand=True)
+        
+        # Add some padding at the bottom
+        ttk.Frame(container, height=10).pack()
+    
+    def _on_c10_input_change(self, event=None):
+        """Handle changes in the C10 card number input."""
+        # Remove any non-digit characters
+        current = self.c10_card_var.get()
+        digits = ''.join(filter(str.isdigit, current))
+        if current != digits:
+            self.c10_card_var.set(digits)
+    
+    def _validate_c10(self):
+        """Validate the card number using C10 (Luhn) algorithm."""
+        card_number = self.c10_card_var.get().strip()
+        
+        if not card_number.isdigit():
+            self._show_c10_result("Invalid input. Please enter numeric characters only.", is_error=True)
+            return
+            
+        if len(card_number) < 1:
+            self._show_c10_result("Please enter a card number.", is_error=True)
+            return
+            
+        try:
+            is_valid = self._is_valid_c10(card_number)
+            
+            if is_valid:
+                self._show_c10_result(f"✅ Valid C10 (Luhn) number: {card_number}")
+            else:
+                self._show_c10_result(f"❌ Invalid C10 (Luhn) number: {card_number}", is_error=True)
+                
+        except Exception as e:
+            self._show_c10_result(f"Error during validation: {str(e)}", is_error=True)
+    
+    def _is_valid_c10(self, number):
+        """
+        Validate a number using the C10 (Luhn) algorithm.
+        
+        Args:
+            number (str): The number to validate
+            
+        Returns:
+            bool: True if valid, False otherwise
+        """
+        try:
+            # Convert to list of integers
+            digits = [int(d) for d in str(number)]
+            
+            # Double every second digit from the right
+            for i in range(len(digits) - 2, -1, -2):
+                digits[i] *= 2
+                if digits[i] > 9:
+                    digits[i] = (digits[i] // 10) + (digits[i] % 10)
+            
+            # Sum all digits
+            total = sum(digits)
+            
+            # Check if total is a multiple of 10
+            return total % 10 == 0
+            
+        except Exception as e:
+            print(f"Error in C10 validation: {e}")
+            return False
+    
+    def _show_c10_result(self, message, is_error=False):
+        """Display the validation result in the C10 results box."""
+        self.c10_results.config(state='normal')
+        self.c10_results.delete(1.0, tk.END)
+        
+        # Configure tags for styling
+        self.c10_results.tag_configure('error', foreground='red')
+        self.c10_results.tag_configure('success', foreground='green')
+        
+        # Insert the message with appropriate tags
+        if is_error:
+            self.c10_results.insert(tk.END, message, 'error')
+        else:
+            self.c10_results.insert(tk.END, message, 'success')
+            
+        self.c10_results.config(state='disabled')
+    
+    def _clear_c10_input(self):
+        """Clear the C10 input and results."""
+        self.c10_card_var.set('')
+        self._show_c10_result("")
+        self.c10_entry.focus()
+    
     def _create_about_tab(self):
         """Create the about tab with application information."""
-        about_tab = create_about_tab(self.notebook)
-        self.notebook.add(about_tab, text="About")
+        tab = ttk.Frame(self.notebook, padding=10)
+        self.notebook.add(tab, text="About")
+        
+        # Create the about tab using the about module
+        create_about_tab(tab)
     
     def _create_settings_tab(self):
         """Create the settings tab."""
