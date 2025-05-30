@@ -101,12 +101,14 @@ class MSR605Reader(Reader):
             bool: True if initialization was successful, False otherwise
         """
         try:
-            # Close any existing connection
-            self.close()
+            if self.verbose:
+                print(f"Initializing MSR605 reader on {self.com_port} at {self.baud_rate} baud")
             
-            print(f"Attempting to connect to MSR605 on {self.com_port} at {self.baud_rate} baud...")
+            # Close port if already open
+            if self.serial and self.serial.is_open:
+                self.serial.close()
             
-            # Try to open the specified COM port
+            # Open serial port
             self.serial = serial.Serial(
                 port=self.com_port,
                 baudrate=self.baud_rate,
@@ -118,34 +120,17 @@ class MSR605Reader(Reader):
                 rtscts=0
             )
             
-            # Reset the device
-            self._send_command(MSR_CMD_RESET)
-            time.sleep(0.5)
+            # Reset the reader
+            self.serial.write(MSR_CMD_RESET)
+            time.sleep(0.1)  # Give it time to reset
             
-            # Set ISO format
-            self._send_command(MSR_CMD_SET_ISO + b'1')
-            time.sleep(0.1)
+            # Check if we can communicate with the reader
+            self.serial.write(MSR_CMD_GET_DEVICE_MODEL)
+            response = self.serial.read(16)
             
-            # Try to get device model
-            response = self._send_command(MSR_CMD_GET_DEVICE_MODEL, response=True)
-            
-            if response:
-                print(f"Successfully connected to MSR605 on {self.com_port} at {self.baud_rate} baud")
-                self.initialized = True
-                return True
-            
-            print(f"No response from MSR605 on {self.com_port} at {self.baud_rate} baud")
-            self.close()
-            return False
-            
-        except serial.SerialException as e:
-            print(f"Serial port error: {str(e)}")
-            self.close()
-            return False
-            
-        except Exception as e:
-            print(f"Error initializing MSR605: {str(e)}")
-            if self.verbose:
+            if not response:
+                if self.verbose:
+                    print("No response from reader")
                 import traceback
                 print(traceback.format_exc())
             self.close()
