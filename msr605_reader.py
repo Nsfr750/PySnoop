@@ -272,121 +272,19 @@ class MSR605Reader(Reader):
                 print(traceback.format_exc())
             return None
     
-    def read(self):
+    def read(self) -> Optional[Dict[str, str]]:
         """
-        Read a card from the MSR605
+        Read data from the MSR605
         
         Returns:
-            Optional[Card]: The card that was read, or None if no card was read
+            Dict[str, str]: Dictionary containing track data if successful, None otherwise
         """
         if not self.initialized and not self.init_reader():
-            return None
-            
-        # Import Card and Track here to avoid circular imports
-        from card import Card
-        from track import Track
-            
-        # Send read command
-        response = self._send_command(MSR_CMD_READ_RAW)
-        if not response:
-            return None
-            
-        # Parse the response into tracks
-        card = Card()
+            print("Error: Could not initialize MSR605")
         
-        # The response format depends on the card and tracks encoded
-        # This is a simplified parser - you may need to adjust based on your needs
-        try:
-            # Split response into tracks (simplified)
-            tracks_data = response.split(b'%')
-            
-            for track_data in tracks_data:
-                if not track_data:
-                    continue
-                    
-                # The first character indicates the track number
-                track_num = int(track_data[0])
-                if track_num not in [1, 2, 3]:
-                    continue
-                    
-                # The rest is the track data
-                data = track_data[1:].strip()
-                if data:
-                    track = Track(data, len(data), track_num)
-                    card.add_track(track)
-                    
-        except Exception as e:
-            print(f"Error parsing card data: {e}", file=sys.stderr)
-            return None
-            
-        return card if card.get_tracks() else None
-        
-
-    
-    def write(self, card, tracks=None):
-        """
-        Write data to a card using the MSR605
-        
-        Args:
-            card: Card object containing track data
-            tracks: List of track numbers to write (default: all tracks)
-            
-        Returns:
-            bool: True if write was successful
-        """
-        if not self.initialized and not self.init_reader():
-            return False
-            
-        if tracks is None:
-            tracks = self.writable_tracks
-            
-        try:
-            # Erase the card first
-            self._send_command(MSR_CMD_ERASE)
-            time.sleep(0.5)
-            
-            # Write each track
-            for track_num in tracks:
-                track = card.get_track(track_num)
-                if not track:
-                    continue
-                    
-                # Format the track data for writing
-                # This is a simplified version - you'll need to adjust based on your needs
-                track_data = f"{track_num}{track.get_chars()}".encode('ascii')
-                self._send_command(MSR_CMD_WRITE, track_data)
-                time.sleep(0.2)
-                
-            return True
-            
-        except Exception as e:
-            print(f"Error writing to card: {e}", file=sys.stderr)
-            return False
-            
-    def read_raw(self) -> None:
-        """
-        Read raw data from the MSR605
-        """
-        if not self.initialized and not self.init_reader():
-            return
-            
-        try:
-            response = self._send_command(MSR_CMD_READ_RAW)
-            if response:
-                print("Raw data:", response.hex(' '))
-                
-        except Exception as e:
-            print(f"Error reading raw data: {e}", file=sys.stderr)
-    
-    def write_xml(self, filename: str) -> bool:
-        """
-        Write reader configuration to XML
-        
-        Args:
-            filename: Path to the XML file
-            
-        Returns:
-            bool: True if write was successful
+        # Convert to strings
+        result = {}
+        for track, data in tracks.items():
         """
         try:
             import xml.etree.ElementTree as ET
