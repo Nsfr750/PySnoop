@@ -1,343 +1,380 @@
 #!/usr/bin/env python3
 """
-mod10_gui.py - GUI interface for Luhn algorithm validation and generation
+mod10_gui.py - GUI for Luhn algorithm (mod 10) credit card validation and generation
 
-A PyQt6-based GUI for the mod10.py module that provides an intuitive interface
-for validating and generating credit card numbers using the Luhn algorithm.
+This module provides a graphical user interface for the mod10.py module,
+allowing users to validate credit card numbers and generate valid ones.
 """
 
-import sys
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QLabel, QLineEdit, QPushButton, QGroupBox, QSpinBox,
-                             QTextEdit, QMessageBox, QTabWidget)
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QIcon, QFont, QPalette, QColor
+import tkinter as tk
+from tkinter import ttk, messagebox, scrolledtext
+import random
+import re
+from typing import Optional
 
-# Import our mod10 functions
+# Import the mod10 module
 from mod10 import mod10_check, generate_credit_card
 
-class Mod10Validator(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Luhn Algorithm Tool")
-        self.setMinimumSize(600, 500)
-        
-        # Set application style
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #f0f0f0;
-            }
-            QGroupBox {
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                margin-top: 10px;
-                padding-top: 15px;
-            }
-            QGroupBox::title {
-                subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 3px 0 3px;
-            }
-            QPushButton {
-                background-color: #4a86e8;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                min-width: 100px;
-            }
-            QPushButton:hover {
-                background-color: #3a76d8;
-            }
-            QPushButton:disabled {
-                background-color: #cccccc;
-            }
-            QLineEdit, QSpinBox, QTextEdit {
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-family: monospace;
-            }
-            QLineEdit:focus, QSpinBox:focus, QTextEdit:focus {
-                border: 1px solid #4a86e8;
-            }
-            .valid {
-                color: #2e8b57;
-                font-weight: bold;
-            }
-            .invalid {
-                color: #d32f2f;
-                font-weight: bold;
-            }
-        """)
-        
-        self.init_ui()
+class Mod10GUI:
+    """Main application window for the Mod10 GUI."""
     
-    def init_ui(self):
-        """Initialize the user interface"""
-        # Create central widget and main layout
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        main_layout = QVBoxLayout(central_widget)
+    def __init__(self, root):
+        """Initialize the GUI."""
+        self.root = root
+        self.root.title("Luhn Algorithm Tool")
+        self.root.geometry("500x400")
+        self.root.minsize(450, 350)
         
-        # Create tab widget
-        tab_widget = QTabWidget()
-        main_layout.addWidget(tab_widget)
+        # Set application icon if available
+        try:
+            self.root.iconbitmap("icon.ico")
+        except:
+            pass  # Use default icon if file not found
+        
+        self.setup_ui()
+    
+    def setup_ui(self):
+        """Set up the user interface."""
+        # Create main container
+        main_frame = ttk.Frame(self.root, padding="10")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create notebook for tabs
+        self.notebook = ttk.Notebook(main_frame)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
         
         # Create tabs
-        self.setup_validation_tab(tab_widget)
-        self.setup_generation_tab(tab_widget)
-        self.setup_about_tab(tab_widget)
+        self.setup_validation_tab()
+        self.setup_generation_tab()
+        self.setup_about_tab()
         
         # Status bar
-        self.statusBar().showMessage("Ready")
+        self.status_var = tk.StringVar(value="Ready")
+        status_bar = ttk.Label(
+            main_frame, 
+            textvariable=self.status_var, 
+            relief=tk.SUNKEN, 
+            anchor=tk.W
+        )
+        status_bar.pack(fill=tk.X, pady=(5, 0))
     
-    def setup_validation_tab(self, tab_widget):
-        """Set up the validation tab"""
-        tab = QWidget()
-        layout = QVBoxLayout(tab)
+    def setup_validation_tab(self):
+        """Set up the credit card validation tab."""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="Validate Card")
         
-        # Input group
-        input_group = QGroupBox("Credit Card Number")
-        input_layout = QVBoxLayout()
+        # Main container with padding
+        container = ttk.Frame(tab, padding=10)
+        container.pack(fill=tk.BOTH, expand=True)
         
-        self.card_input = QLineEdit()
-        self.card_input.setPlaceholderText("Enter credit card number...")
-        self.card_input.textChanged.connect(self.on_card_input_changed)
-        input_layout.addWidget(self.card_input)
+        # Instructions
+        ttk.Label(
+            container, 
+            text="Enter a credit card number to validate:",
+            font=('Arial', 10, 'bold')
+        ).pack(anchor=tk.W, pady=(0, 10))
         
-        # Format hint
-        hint = QLabel("Enter a credit card number to validate it using the Luhn algorithm.")
-        hint.setWordWrap(True)
-        hint.setStyleSheet("color: #666; font-style: italic;")
-        input_layout.addWidget(hint)
+        # Card number entry
+        entry_frame = ttk.Frame(container)
+        entry_frame.pack(fill=tk.X, pady=5)
         
-        input_group.setLayout(input_layout)
-        layout.addWidget(input_group)
+        self.card_entry = ttk.Entry(entry_frame, font=('Arial', 12))
+        self.card_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        self.card_entry.bind('<Return>', lambda e: self.validate_card())
         
-        # Result group
-        result_group = QGroupBox("Validation Result")
-        result_layout = QVBoxLayout()
+        validate_btn = ttk.Button(
+            entry_frame, 
+            text="Validate", 
+            command=self.validate_card,
+            style="Accent.TButton"
+        )
+        validate_btn.pack(side=tk.RIGHT)
         
-        self.result_label = QLabel("Enter a credit card number to validate")
-        self.result_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.result_label.setMinimumHeight(100)
+        # Result display
+        self.result_frame = ttk.LabelFrame(container, text="Result", padding=10)
+        self.result_frame.pack(fill=tk.BOTH, expand=True, pady=(10, 0))
         
-        # Set a larger font for the result
-        font = self.result_label.font()
-        font.setPointSize(14)
-        self.result_label.setFont(font)
-        
-        result_layout.addWidget(self.result_label)
-        result_group.setLayout(result_layout)
-        layout.addWidget(result_group)
-        
-        # Validate button
-        self.validate_btn = QPushButton("Validate")
-        self.validate_btn.clicked.connect(self.validate_card)
-        self.validate_btn.setEnabled(False)
-        layout.addWidget(self.validate_btn)
-        
-        tab_widget.addTab(tab, "Validation")
+        self.result_text = ttk.Label(
+            self.result_frame, 
+            text="Enter a card number and click 'Validate'",
+            justify=tk.CENTER,
+            font=('Arial', 12)
+        )
+        self.result_text.pack(expand=True)
     
-    def setup_generation_tab(self, tab_widget):
-        """Set up the generation tab"""
-        tab = QWidget()
-        layout = QVBoxLayout(tab)
+    def setup_generation_tab(self):
+        """Set up the credit card generation tab."""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="Generate Card")
         
-        # Settings group
-        settings_group = QGroupBox("Generation Settings")
-        settings_layout = QVBoxLayout()
+        # Main container with padding
+        container = ttk.Frame(tab, padding=10)
+        container.pack(fill=tk.BOTH, expand=True)
         
         # Length selection
-        length_layout = QHBoxLayout()
-        length_label = QLabel("Card Length:")
-        self.length_spinbox = QSpinBox()
-        self.length_spinbox.setRange(4, 32)
-        self.length_spinbox.setValue(16)
-        length_layout.addWidget(length_label)
-        length_layout.addWidget(self.length_spinbox)
-        length_layout.addStretch()
-        settings_layout.addLayout(length_layout)
+        length_frame = ttk.Frame(container)
+        length_frame.pack(fill=tk.X, pady=(0, 15))
         
-        # Prefix (optional)
-        prefix_layout = QHBoxLayout()
-        prefix_label = QLabel("Prefix (optional):")
-        self.prefix_input = QLineEdit()
-        self.prefix_input.setPlaceholderText("e.g., 4 for Visa, 5 for Mastercard")
-        prefix_layout.addWidget(prefix_label)
-        prefix_layout.addWidget(self.prefix_input)
-        settings_layout.addLayout(prefix_layout)
+        ttk.Label(length_frame, text="Card length:").pack(side=tk.LEFT, padx=(0, 10))
         
-        settings_group.setLayout(settings_layout)
-        layout.addWidget(settings_group)
+        self.length_var = tk.StringVar(value="16")
+        length_combo = ttk.Combobox(
+            length_frame, 
+            textvariable=self.length_var,
+            values=[str(i) for i in range(12, 21)],  # Common card lengths
+            state='readonly',
+            width=5
+        )
+        length_combo.pack(side=tk.LEFT)
         
         # Generate button
-        self.generate_btn = QPushButton("Generate Card Number")
-        self.generate_btn.clicked.connect(self.generate_card)
-        layout.addWidget(self.generate_btn)
+        generate_btn = ttk.Button(
+            container, 
+            text="Generate Card Number", 
+            command=self.generate_card,
+            style="Accent.TButton"
+        )
+        generate_btn.pack(pady=(0, 15))
         
-        # Generated card
-        self.generated_card_label = QLabel("Generated card will appear here...")
-        self.generated_card_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.generated_card_label.setStyleSheet("""
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 20px;
-            font-family: monospace;
-            font-size: 16px;
-            margin-top: 10px;
-        """)
-        layout.addWidget(self.generated_card_label)
+        # Generated card display
+        self.generated_card_var = tk.StringVar()
+        
+        card_frame = ttk.Frame(container, padding=10, style='Card.TFrame')
+        card_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Label(
+            card_frame, 
+            text="Generated Card:",
+            font=('Arial', 9, 'bold')
+        ).pack(anchor=tk.W)
+        
+        self.generated_card_display = ttk.Label(
+            card_frame, 
+            textvariable=self.generated_card_var,
+            font=('Consolas', 12, 'bold'),
+            foreground='#0066cc'
+        )
+        self.generated_card_display.pack(anchor=tk.W, pady=(5, 0))
         
         # Copy button
-        self.copy_btn = QPushButton("Copy to Clipboard")
-        self.copy_btn.clicked.connect(self.copy_to_clipboard)
-        self.copy_btn.setEnabled(False)
-        layout.addWidget(self.copy_btn)
-        
-        layout.addStretch()
-        tab_widget.addTab(tab, "Generation")
+        copy_btn = ttk.Button(
+            container,
+            text="Copy to Clipboard",
+            command=self.copy_to_clipboard,
+            state=tk.DISABLED
+        )
+        copy_btn.pack(pady=(5, 0))
+        self.copy_btn = copy_btn
     
-    def setup_about_tab(self, tab_widget):
-        """Set up the about tab"""
-        tab = QWidget()
-        layout = QVBoxLayout(tab)
-        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+    def setup_about_tab(self):
+        """Set up the about tab with information about the Luhn algorithm."""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="About")
         
-        # App info
-        app_info = QLabel("Luhn Algorithm Tool")
-        app_info.setStyleSheet("font-size: 18px; font-weight: bold; margin-bottom: 10px;")
-        app_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(app_info)
+        # Main container with padding and scrolling
+        container = ttk.Frame(tab)
+        container.pack(fill=tk.BOTH, expand=True)
+        
+        # Canvas and scrollbar for scrolling content
+        canvas = tk.Canvas(container)
+        scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Pack the canvas and scrollbar
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # About content
+        content = ttk.Frame(scrollable_frame, padding=10)
+        content.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        ttk.Label(
+            content, 
+            text="Luhn Algorithm Tool",
+            font=('Arial', 16, 'bold')
+        ).pack(pady=(0, 10))
         
         # Description
-        desc = QLabel(
-            "This tool helps you validate and generate credit card numbers "
-            "using the Luhn algorithm (mod 10).\n\n"
-            "• Use the Validation tab to check if a credit card number is valid.\n"
-            "• Use the Generation tab to create valid test credit card numbers.\n\n"
-            "Note: This tool is for educational and testing purposes only."
+        about_text = """
+        This tool implements the Luhn algorithm (also known as the "modulus 10" or "mod 10" algorithm), 
+        which is widely used to validate a variety of identification numbers, 
+        especially credit card numbers.
+        
+        Features:
+        • Validate credit card numbers
+        • Generate valid credit card numbers
+        • Simple, intuitive interface
+        
+        The Luhn algorithm works by processing the digits of a number in a specific way to determine 
+        if it's a valid number according to the algorithm's rules. It's not a cryptographically 
+        secure hash function, but it's useful for detecting common errors like single-digit errors 
+        or simple transpositions of adjacent digits.
+        
+        Note: This tool is for educational purposes only. Generated card numbers are not real 
+        and should not be used for any fraudulent activities.
+        """
+        
+        about_label = ttk.Label(
+            content,
+            text=about_text,
+            justify=tk.LEFT,
+            wraplength=450
         )
-        desc.setWordWrap(True)
-        desc.setStyleSheet("margin: 10px 0;")
-        layout.addWidget(desc)
+        about_label.pack(anchor=tk.W, fill=tk.X, pady=5)
         
-        # Author info
-        author = QLabel("Created by: Acidus (acidus@msblabs.org)")
-        author.setStyleSheet("color: #666; margin-top: 20px;")
-        author.setAlignment(Qt.AlignmentFlag.AlignRight)
-        layout.addWidget(author)
-        
-        tab_widget.addTab(tab, "About")
-    
-    def on_card_input_changed(self, text):
-        """Handle changes to the card input field"""
-        # Only enable validate button if there's text to validate
-        self.validate_btn.setEnabled(len(text.strip()) > 0)
+        # Version and author
+        ttk.Label(
+            content,
+            text="\nVersion 1.0.0\n© 2023 Luhn Algorithm Tool",
+            font=('Arial', 8),
+            foreground='gray'
+        ).pack(side=tk.BOTTOM, pady=10)
     
     def validate_card(self):
-        """Validate the entered credit card number"""
-        card_number = self.card_input.text().strip()
+        """Validate the entered credit card number."""
+        card_number = self.card_entry.get().strip()
+        
+        if not card_number:
+            self.show_result("Please enter a credit card number", "warning")
+            return
         
         # Remove any non-digit characters
         card_digits = ''.join(filter(str.isdigit, card_number))
         
         if not card_digits:
-            self.show_result("Please enter a valid credit card number", False)
+            self.show_result("Invalid card number format", "error")
             return
-        
-        is_valid = mod10_check(card_digits)
         
         # Format the card number with spaces for better readability
         formatted_number = ' '.join([card_digits[i:i+4] for i in range(0, len(card_digits), 4)])
         
-        if is_valid:
-            self.show_result(f"✓ Valid Credit Card Number\n{formatted_number}", True)
+        if mod10_check(card_digits):
+            # Check card type based on first digits
+            card_type = self.detect_card_type(card_digits)
+            self.show_result(
+                f"✓ Valid {card_type}\n{formatted_number}", 
+                "success"
+            )
         else:
-            self.show_result(f"✗ Invalid Credit Card Number\n{formatted_number}", False)
-    
-    def show_result(self, message, is_valid):
-        """Display the validation result"""
-        self.result_label.setText(message)
-        
-        # Set style based on validity
-        if is_valid:
-            self.result_label.setStyleSheet("color: #2e8b57; font-weight: bold;")
-        else:
-            self.result_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
+            self.show_result(
+                f"✗ Invalid card number\n{formatted_number}",
+                "error"
+            )
     
     def generate_card(self):
-        """Generate a valid credit card number"""
+        """Generate a valid credit card number."""
         try:
-            length = self.length_spinbox.value()
-            prefix = self.prefix_input.text().strip()
-            
-            # If prefix is provided, adjust the length
-            if prefix:
-                # Remove any non-digit characters from prefix
-                prefix = ''.join(filter(str.isdigit, prefix))
-                if not prefix:
-                    QMessageBox.warning(self, "Invalid Prefix", "Please enter a valid numeric prefix.")
-                    return
-                    
-                # Ensure the total length is at least 4 digits
-                if len(prefix) >= length:
-                    QMessageBox.warning(
-                        self, 
-                        "Invalid Length", 
-                        f"Prefix is {len(prefix)} digits, but requested length is only {length}. "
-                        f"Please increase the length to at least {len(prefix) + 1}."
-                    )
-                    return
+            length = int(self.length_var.get())
+            if length < 4 or length > 30:  # Reasonable limits
+                raise ValueError("Card length must be between 4 and 30 digits")
                 
-                # Generate the rest of the number
-                remaining_length = length - len(prefix) - 1  # -1 for check digit
-                random_digits = ''.join(str(random.randint(0, 9)) for _ in range(remaining_length))
-                partial_number = prefix + random_digits
-                
-                # Find the check digit that makes it valid
-                for check_digit in range(10):
-                    card_number = partial_number + str(check_digit)
-                    if mod10_check(card_number):
-                        break
-            else:
-                # No prefix, just generate a random valid number
-                card_number = generate_credit_card(length)
+            card_number = generate_credit_card(length)
             
             # Format with spaces for better readability
             formatted_number = ' '.join([card_number[i:i+4] for i in range(0, len(card_number), 4)])
-            self.generated_card_label.setText(formatted_number)
-            self.generated_card = card_number
-            self.copy_btn.setEnabled(True)
-            self.statusBar().showMessage("Card number generated successfully", 3000)
             
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to generate card number: {str(e)}")
+            self.generated_card_var.set(formatted_number)
+            self.copy_btn.config(state=tk.NORMAL)
+            self.status_var.set(f"Generated {length}-digit card number")
+            
+            # Switch to the generation tab if not already there
+            self.notebook.select(1)
+            
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
     
     def copy_to_clipboard(self):
-        """Copy the generated card number to the clipboard"""
-        if hasattr(self, 'generated_card'):
-            clipboard = QApplication.clipboard()
-            clipboard.setText(self.generated_card)
-            self.statusBar().showMessage("Copied to clipboard!", 2000)
+        """Copy the generated card number to the clipboard."""
+        card_number = self.generated_card_var.get()
+        if card_number:
+            # Remove spaces for the actual card number
+            card_digits = card_number.replace(" ", "")
+            self.root.clipboard_clear()
+            self.root.clipboard_append(card_digits)
+            self.status_var.set("Card number copied to clipboard")
+    
+    def show_result(self, message: str, result_type: str = "info"):
+        """
+        Display the validation result.
+        
+        Args:
+            message: The message to display
+            result_type: One of "success", "error", "warning", "info"
+        """
+        # Update status bar
+        self.status_var.set("Validation complete")
+        
+        # Set colors based on result type
+        colors = {
+            "success": "#2e7d32",  # Dark green
+            "error": "#c62828",    # Dark red
+            "warning": "#f9a825",   # Dark yellow
+            "info": "#1565c0"       # Dark blue
+        }
+        
+        self.result_text.config(
+            text=message,
+            foreground=colors.get(result_type, "black")
+        )
+    
+    @staticmethod
+    def detect_card_type(card_number: str) -> str:
+        """
+        Detect the card type based on the card number.
+        
+        Args:
+            card_number: The credit card number (digits only)
+            
+        Returns:
+            str: The detected card type or "Credit/Debit Card" if unknown
+        """
+        card_types = {
+            '4': 'Visa',
+            '5[1-5]': 'Mastercard',
+            '3[47]': 'American Express',
+            '3(?:0[0-5]|[68]\d)': 'Diners Club',
+            '6(?:011|5\d{2})': 'Discover',
+            '35\d{2}': 'JCB',
+            '22\d{2}': 'Mir',
+            '62': 'UnionPay',
+            '9792': 'Troy',
+            '3(?:0[0-5]|3\d)': 'Diners Club',
+        }
+        
+        for pattern, card_type in card_types.items():
+            if re.match(f'^{pattern}', card_number):
+                return card_type
+        
+        return "Credit/Debit Card"
 
 def main():
-    app = QApplication(sys.argv)
+    """Main entry point for the application."""
+    root = tk.Tk()
     
-    # Set application style
-    app.setStyle('Fusion')
+    # Set a theme if available
+    try:
+        import ttkthemes
+        style = ttkthemes.ThemedStyle(root)
+        style.set_theme("arc")  # Try a nice theme if available
+    except ImportError:
+        # Fall back to default theme
+        style = ttk.Style()
+        style.configure("Accent.TButton", font=('Arial', 10, 'bold'))
     
-    # Set application information
-    app.setApplicationName("Luhn Algorithm Tool")
-    app.setApplicationVersion("1.0")
-    app.setOrganizationName("MSB Labs")
+    # Configure styles
+    style.configure('Card.TFrame', background='#f5f5f5', relief=tk.SOLID, borderwidth=1)
     
-    window = Mod10Validator()
-    window.show()
-    
-    sys.exit(app.exec())
+    app = Mod10GUI(root)
+    root.mainloop()
 
 if __name__ == "__main__":
     main()

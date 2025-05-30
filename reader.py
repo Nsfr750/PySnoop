@@ -162,7 +162,8 @@ class DirectReader(Reader):
             clk3: Clock pin for track 3
             data3: Data pin for track 3
         """
-        super().__init__()
+        # Initialize the parent class with a name
+        super().__init__("DirectReader")
         self.port = port
         self.uses_cp = False
         self.cp = cp
@@ -269,7 +270,8 @@ class SerialReader(Reader):
         Args:
             device: Path to the serial device (e.g., /dev/ttyS0 or COM1)
         """
-        super().__init__()
+        # Initialize the parent class with a name
+        super().__init__("SerialReader")
         self.device = device
         self.file_handle = None
         self.flag_cr = False  # CR flag for some readers

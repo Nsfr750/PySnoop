@@ -1,12 +1,13 @@
 """
 MSR605 Reader/Writer Implementation
 
-This module provides support for the MagTek MSR605 magnetic stripe card reader/writer.
+This module provides support for the MagTek MSR605 magnetic stripe card reader/writer
+using PySerial for communication.
 """
 
-import hid
 import time
-import sys
+import serial
+import serial.tools.list_ports
 from typing import Optional, List, Dict, Any, Type, TYPE_CHECKING
 
 # Import Card and Track locally to avoid circular imports
@@ -14,10 +15,6 @@ if TYPE_CHECKING:
     from reader import Reader
     from card import Card
     from track import Track
-
-# MSR605 USB Vendor and Product IDs
-MSR605_VENDOR_ID = 0x0801
-MSR605_PRODUCT_ID = 0x0001
 
 # MSR605 Commands
 MSR_CMD_RESET = b'\x1B\x61'  # Reset
@@ -33,92 +30,247 @@ MSR_CMD_GET_SERIAL = b'\x1B\x6A'  # Get serial number
 TRACK_DENSITY_LOCO = 0  # 210 bpi
 TRACK_DENSITY_HICO = 1  # 75 bpi
 
-class MSR605Reader:
+# Default settings
+DEFAULT_BAUD_RATE = 9600
+DEFAULT_PORT = 'COM5'
+
+# Import Reader at the top level to avoid circular imports
+from reader import Reader
+
+class MSR605Reader(Reader):
     """
     Implementation of the MagTek MSR605 magnetic stripe card reader/writer
     """
     
-    def __init__(self, device_path: Optional[str] = None):
+    def __init__(self, com_port: Optional[str] = None, baud_rate: int = DEFAULT_BAUD_RATE):
         """
         Initialize a new MSR605Reader instance
         
         Args:
-            device_path: Optional path to the HID device
+            com_port: Optional COM port (e.g., 'COM5'). If None, will use DEFAULT_PORT
+            baud_rate: Baud rate for serial communication (default: 9600)
         """
-        # Import Reader here to avoid circular imports
-        from reader import Reader
-        self.__class__.__bases__ = (Reader,)
-        Reader.__init__(self, "MSR605")
-        self.device_path = device_path
-        self.device = None
+        super().__init__("MSR605")
+        self.com_port = com_port or DEFAULT_PORT
+        self.baud_rate = baud_rate
+        self.serial = None
         self.initialized = False
-        self.readable_tracks = [1, 2, 3]  # MSR605 can read all 3 tracks
-        self.writable_tracks = [1, 2, 3]   # MSR605 can write to all 3 tracks
+        self.verbose = False
+        self.readable_tracks = [1, 2, 3]  # All tracks readable
+        self.writable_tracks = [1, 2, 3]  # All tracks writable
         
+    def set_serial_port(self, com_port: str, baud_rate: int = None) -> None:
+        """
+        Set the serial port and optionally the baud rate for the MSR605
+        
+        Args:
+            com_port: COM port (e.g., 'COM5')
+            baud_rate: Optional baud rate (default: keep current)
+        """
+        self.com_port = com_port
+        if baud_rate is not None:
+            self.baud_rate = baud_rate
+            
+    @staticmethod
+    def list_serial_ports() -> List[Dict[str, Any]]:
+        """
+        List all available serial ports with detailed information
+        
+        Returns:
+            List of dictionaries containing port information
+        """
+        ports = []
+        for port in serial.tools.list_ports.comports():
+            port_info = {
+                'device': port.device,
+                'name': port.name,
+                'description': port.description or 'N/A',
+                'hwid': port.hwid or 'N/A',
+                'vid': port.vid if port.vid is not None else 'N/A',
+                'pid': port.pid if port.pid is not None else 'N/A',
+                'serial_number': port.serial_number or 'N/A',
+                'manufacturer': port.manufacturer or 'N/A',
+                'product': port.product or 'N/A',
+                'interface': port.interface or 'N/A'
+            }
+            ports.append(port_info)
+        return ports
+    
     def init_reader(self) -> bool:
         """
         Initialize the MSR605 reader
         
         Returns:
-            bool: True if initialization was successful
+            bool: True if initialization was successful, False otherwise
         """
         try:
-            # Try to find the MSR605 device
-            if self.device_path:
-                self.device = hid.device()
-                self.device.open_path(self.device_path.encode('utf-8'))
-            else:
-                # Auto-detect MSR605
-                devices = hid.enumerate(MSR605_VENDOR_ID, MSR605_PRODUCT_ID)
-                if not devices:
-                    print("MSR605 device not found", file=sys.stderr)
-                    return False
-                    
-                self.device = hid.device()
-                self.device.open(MSR605_VENDOR_ID, MSR605_PRODUCT_ID)
+            # Close any existing connection
+            self.close()
             
-            # Set non-blocking mode
-            self.device.set_nonblocking(1)
+            print(f"Attempting to connect to MSR605 on {self.com_port} at {self.baud_rate} baud...")
+            
+            # Try to open the specified COM port
+            self.serial = serial.Serial(
+                port=self.com_port,
+                baudrate=self.baud_rate,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                timeout=1,
+                xonxoff=0,
+                rtscts=0
+            )
             
             # Reset the device
             self._send_command(MSR_CMD_RESET)
-            time.sleep(0.5)  # Wait for reset
+            time.sleep(0.5)
             
-            self.initialized = True
-            return True
+            # Set ISO format
+            self._send_command(MSR_CMD_SET_ISO + b'1')
+            time.sleep(0.1)
+            
+            # Try to get device model
+            response = self._send_command(MSR_CMD_GET_DEVICE_MODEL, response=True)
+            
+            if response:
+                print(f"Successfully connected to MSR605 on {self.com_port} at {self.baud_rate} baud")
+                self.initialized = True
+                return True
+            
+            print(f"No response from MSR605 on {self.com_port} at {self.baud_rate} baud")
+            self.close()
+            return False
+            
+        except serial.SerialException as e:
+            print(f"Serial port error: {str(e)}")
+            self.close()
+            return False
             
         except Exception as e:
-            print(f"Error initializing MSR605: {e}", file=sys.stderr)
-            self.initialized = False
+            import traceback
+            print(f"Error initializing MSR605: {str(e)}")
+            if self.verbose:
+                print(traceback.format_exc())
+            self.close()
             return False
     
-    def _send_command(self, command: bytes, data: bytes = b'') -> Optional[bytes]:
+    def _auto_detect_serial_port(self) -> bool:
         """
-        Send a command to the MSR605 and read the response
+        Try to auto-detect the MSR605 on available serial ports.
         
-        Args:
-            command: Command to send
-            data: Optional data to send with the command
-            
         Returns:
-            Optional[bytes]: Response data or None if no response
+            bool: True if device was found and initialized, False otherwise
         """
-        if not self.device:
-            return None
-            
         try:
-            # Send the command
-            self.device.write(command + data)
+            print("Auto-detecting MSR605 on available serial ports...")
             
-            # Read response
-            response = self.device.read(64)  # Read up to 64 bytes
-            return bytes(response) if response else None
+            # Common baud rates to try (starting with the default)
+            baud_rates = [self.baud_rate, 9600, 19200, 38400, 57600, 115200]
+            
+            # Get list of available ports
+            ports = serial.tools.list_ports.comports()
+            if not ports:
+                print("No serial ports found")
+                return False
+                
+            # Try each port with each baud rate
+            for port in ports:
+                port_name = port.device
+                print(f"Trying port: {port_name} ({port.description or 'No description'})")
+                
+                for baud in baud_rates:
+                    try:
+                        print(f"  Trying baud rate: {baud}")
+                        
+                        # Save current settings
+                        old_port = self.com_port
+                        old_baud = self.baud_rate
+                        
+                        # Try to initialize with this port and baud rate
+                        self.com_port = port_name
+                        self.baud_rate = baud
+                        
+                        if self.init_reader():
+                            print(f"  Found MSR605 on {port_name} at {baud} baud")
+                            return True
+                            
+                        # Restore old settings if not successful
+                        self.com_port = old_port
+                        self.baud_rate = old_baud
+                        
+                    except Exception as e:
+                        print(f"  Error trying {port_name} at {baud} baud: {str(e)}")
+                        continue
+            
+            print("MSR605 not found on any serial ports")
+            return False
             
         except Exception as e:
-            print(f"Error sending command to MSR605: {e}", file=sys.stderr)
-            return None
+            print(f"Error in auto-detection: {str(e)}")
+            if self.verbose:
+                import traceback
+                print(traceback.format_exc())
+            return False
     
-
+    def _send_command(self, command: bytes, response: bool = False, timeout: float = 1.0) -> Optional[bytes]:
+        """
+        Send a command to the MSR605 and optionally wait for a response
+        
+        Args:
+            command: The command to send
+            response: Whether to wait for and return a response
+            timeout: Timeout in seconds
+            
+        Returns:
+            Optional[bytes]: The response if response=True, None otherwise
+        """
+        if not self.initialized or not self.serial or not self.serial.is_open:
+            if not self.init_reader():
+                print("Error: Could not initialize MSR605")
+                return None
+        
+        try:
+            # Clear any pending input
+            if self.serial.in_waiting > 0:
+                self.serial.reset_input_buffer()
+            
+            # Send the command
+            self.serial.write(command)
+            
+            if response:
+                # Wait for response with timeout
+                start_time = time.time()
+                response_data = bytearray()
+                
+                while time.time() - start_time < timeout:
+                    if self.serial.in_waiting > 0:
+                        # Read all available data
+                        chunk = self.serial.read(self.serial.in_waiting)
+                        response_data.extend(chunk)
+                        
+                        # Check if we have a complete response
+                        if len(response_data) >= 2 and response_data[-2:] == b'\r\n':
+                            return bytes(response_data)
+                    
+                    # Small delay to prevent busy waiting
+                    time.sleep(0.01)
+                
+                # Return whatever we have if we timed out
+                return bytes(response_data) if response_data else None
+                
+            return None
+            
+        except serial.SerialException as e:
+            print(f"Serial communication error: {str(e)}")
+            self.initialized = False
+            return None
+            
+        except Exception as e:
+            print(f"Error sending command: {str(e)}")
+            if self.verbose:
+                import traceback
+                print(traceback.format_exc())
+            return None
     
     def read(self):
         """
@@ -282,16 +434,20 @@ def create_msr605_reader(config):
     Create an MSR605 reader from a configuration dictionary
     
     Args:
-        config: Configuration dictionary
+        config: Configuration dictionary with reader configuration
         
     Returns:
         MSR605Reader: Configured MSR605 reader instance
     """
+    # Get device path from config or use default
     device_path = config.get('device_path')
+    
+    # Create and configure the reader
     reader = MSR605Reader(device_path)
+    reader.set_verbose(config.get('verbose', False))
     
     # Set readable tracks if specified
     if 'readable_tracks' in config:
-        reader.readable_tracks = [int(t) for t in config['readable_tracks']]
-        
+        reader.set_readable_tracks(config['readable_tracks'])
+    
     return reader

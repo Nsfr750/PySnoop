@@ -1,4 +1,4 @@
 @echo off
-REM Launcher script for Card Database Manager GUI
-
-python gui_main.py %*
+call .venv\Scripts\activate
+python stripe_snoop_gui.py
+pause
