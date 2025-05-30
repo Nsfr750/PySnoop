@@ -400,22 +400,109 @@ class MSR605Reader(Reader):
                 print(traceback.format_exc())
             return False
     
-    def close(self) -> None:
+    def close(self):
         """Close the connection to the MSR605"""
-        try:
-            if hasattr(self, 'serial') and self.serial and self.serial.is_open:
+        if self.serial and self.serial.is_open:
+            try:
                 self.serial.close()
-            self.initialized = False
+                self.initialized = False
+                if self.verbose:
+                    print("Closed connection to MSR605")
+            except Exception as e:
+                if self.verbose:
+                    print(f"Error closing connection: {str(e)}")
+                    
+    def read_raw(self) -> Dict[str, str]:
+        """
+        Read raw data from the MSR605 reader
+        
+        Returns:
+            Dict[str, str]: Dictionary containing raw track data with keys 'track1', 'track2', 'track3'
+        """
+        if not self.initialized and not self.init_reader():
+            raise RuntimeError("MSR605 reader not initialized")
+            
+        try:
+            # Send read raw command
+            self.serial.write(MSR_CMD_READ_RAW)
+            
+            # Read response (format: STX [track1 data] FS [track2 data] FS [track3 data] ETX)
+            # FS = 0x1C, ETX = 0x03
+            response = bytearray()
+            while True:
+                byte = self.serial.read(1)
+                if not byte:
+                    break
+                response.extend(byte)
+                if byte == b'\x03':  # ETX
+                    break
+            
+            # Parse response
+            tracks = response.split(b'\x1c')
+            track_data = {}
+            
+            if len(tracks) >= 1 and len(tracks[0]) > 1:  # Track 1 (skip STX)
+                track_data['track1'] = tracks[0][1:].decode('ascii', errors='replace')
+            if len(tracks) >= 2:  # Track 2
+                track_data['track2'] = tracks[1].decode('ascii', errors='replace')
+            if len(tracks) >= 3:  # Track 3 (remove ETX)
+                track_data['track3'] = tracks[2][:-1].decode('ascii', errors='replace')
+                
+            return track_data
+            
         except Exception as e:
-            print(f"Error closing MSR605: {str(e)}")
             if self.verbose:
-                import traceback
-                print(traceback.format_exc())
+                print(f"Error reading raw data: {str(e)}")
+            raise
+    
+    def write_xml(self, filename: str) -> bool:
+        """
+        Write the MSR605 reader configuration to an XML file
+        
+        Args:
+            filename: Path to the XML file
+            
+        Returns:
+            bool: True if write was successful, False otherwise
+        """
+        try:
+            import xml.etree.ElementTree as ET
+            from xml.dom import minidom
+            
+            # Create root element
+            root = ET.Element("reader")
+            root.set("type", "msr605")
+            
+            # Add port information
+            port_elem = ET.SubElement(root, "port")
+            port_elem.text = self.com_port
+            
+            # Add baud rate
+            baud_elem = ET.SubElement(root, "baudrate")
+            baud_elem.text = str(self.baud_rate)
+            
+            # Create a pretty XML string
+            rough_string = ET.tostring(root, 'utf-8')
+            reparsed = minidom.parseString(rough_string)
+            pretty_xml = reparsed.toprettyxml(indent="  ")
+            
+            # Write to file
+            with open(filename, 'w') as f:
+                f.write(pretty_xml)
+                
+            if self.verbose:
+                print(f"Configuration saved to {filename}")
+                
+            return True
+            
+        except Exception as e:
+            if self.verbose:
+                print(f"Error writing XML configuration: {str(e)}")
+            return False
     
     def __del__(self):
         """Destructor to ensure the serial connection is properly closed"""
         self.close()
-
 
 def list_msr605_devices() -> List[Dict[str, Any]]:
     """
