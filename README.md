@@ -52,7 +52,7 @@ python main.py [options]
 
 ## License
 
-GNU GENERAL PUBLIC LICENSE
+GNU General Public License
 
 ## Credits
 
