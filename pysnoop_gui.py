@@ -12,12 +12,13 @@ import sys
 import queue
 import threading
 import json
-import os
-import sys
 from pathlib import Path
 from datetime import datetime
 import appdirs
 import serial.tools.list_ports
+
+# Import local modules
+from about import create_about_tab
 
 # Import core functionality
 from card import Card
@@ -677,62 +678,8 @@ class PySnoopGUI(tk.Tk):
     
     def _create_about_tab(self):
         """Create the about tab with application information."""
-        tab = ttk.Frame(self.notebook)
+        tab = create_about_tab(self.notebook)
         self.notebook.add(tab, text="About")
-        
-        # Main container with padding
-        container = ttk.Frame(tab, padding=20)
-        container.pack(fill=tk.BOTH, expand=True)
-        
-        # Application title
-        title_label = ttk.Label(
-            container,
-            text="Stripe Snoop 2.0",
-            font=('Helvetica', 16, 'bold')
-        )
-        title_label.pack(pady=(0, 10))
-        
-        # Version information
-        version_label = ttk.Label(
-            container,
-            text="Version 2.0.0",
-            font=('Helvetica', 10)
-        )
-        version_label.pack(pady=(0, 20))
-        
-        # Description
-        desc_text = (
-            "A modern application for reading and managing magnetic stripe card data.\n\n"
-            "Features:\n"
-            "• Read magnetic stripe cards using compatible readers\n"
-            "• View and manage card data in a database\n"
-            "• Export/Import card data in multiple formats\n"
-            "• User-friendly interface with theming support"
-        )
-        desc_label = ttk.Label(
-            container,
-            text=desc_text,
-            justify=tk.LEFT,
-            wraplength=500
-        )
-        desc_label.pack(pady=(0, 20), anchor='w')
-        
-        # Copyright and license
-        copyright_label = ttk.Label(
-            container,
-            text="© 2023 Stripe Snoop Project\nMIT License",
-            font=('Helvetica', 8),
-            foreground='gray'
-        )
-        copyright_label.pack(side=tk.BOTTOM, pady=(10, 0))
-        
-        # GitHub link
-        github_btn = ttk.Button(
-            container,
-            text="View on GitHub",
-            command=lambda: webbrowser.open("https://github.com/Nsfr750/pysnoop")
-        )
-        github_btn.pack(pady=(20, 0))
     
     def _create_settings_tab(self):
         """Create the settings tab."""
@@ -1009,7 +956,7 @@ class PySnoopGUI(tk.Tk):
                 'card_number': self.current_card.get('card_number', ''),
                 'card_holder': self.current_card.get('card_holder', ''),
                 'expiry': self.current_card.get('expiry', ''),
-                'timestamp': datetime.datetime.now().isoformat()
+                'timestamp': datetime.now().isoformat()
             }
             
             # Add the card to the database
