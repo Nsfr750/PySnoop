@@ -84,3 +84,4 @@ dmypy.json
 .pyre/
 exp.json
 snoop.bat
+snoop_debug.bat
