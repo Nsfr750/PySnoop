@@ -1,0 +1,783 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reader &mdash; PySnoop 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySnoop
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">PySnoop Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#building-the-documentation">Building the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#viewing-the-documentation">Viewing the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-via-pip">Install via pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#launching-the-application">Launching the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#connecting-a-card-reader">Connecting a Card Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#reading-a-card">Reading a Card</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validating-card-numbers">Validating Card Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#managing-card-database">Managing Card Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">PySnoop Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#core-modules">Core Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../modules/pysnoop.html">pysnoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/card.html">card</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/reader.html">reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/database.html">database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#gui-modules">GUI Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../modules/pysnoop_gui.html">pysnoop_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/mod10_gui.html">mod10_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/menu.html">menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/about.html">about</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../modules/ssflags.html">ssflags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/version.html">version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#core-modules">Core Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#gui-modules">GUI Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/api.html#pysnoop.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing to PySnoop</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#code-review-process">Code Review Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#id2">Unreleased</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#fixed">Fixed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySnoop</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">reader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for reader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Reader classes for different types of magstripe card readers</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementTree</span> <span class="k">as</span> <span class="n">ET</span>
+
+<span class="c1"># MSR605 reader will be imported dynamically to avoid circular imports</span>
+<span class="n">MSR605Reader</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="viewcode-block" id="import_msr605_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader.import_msr605_reader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_msr605_reader</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">MSR605Reader</span>
+    <span class="k">if</span> <span class="n">MSR605Reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">msr605_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">MSR605Reader</span> <span class="k">as</span> <span class="n">MSR605</span>
+        <span class="n">MSR605Reader</span> <span class="o">=</span> <span class="n">MSR605</span>
+    <span class="k">return</span> <span class="n">MSR605Reader</span></div>
+
+
+<div class="viewcode-block" id="Reader">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Reader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for all card readers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Reader.__init__">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new Reader instance</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            name: Optional name for the reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interface</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="Reader.set_verbose">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.set_verbose">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set verbose output</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            verbose: Enable or disable verbose output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
+
+    
+<div class="viewcode-block" id="Reader.can_read_track">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.can_read_track">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_read_track</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if this reader can read a specific track</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            track_num: Track number to check</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the reader can read the specified track</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">track_num</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span></div>
+
+    
+<div class="viewcode-block" id="Reader.set_can_read_track">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.set_can_read_track">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_can_read_track</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set whether this reader can read a specific track</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            track_num: Track number to set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">track_num</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">track_num</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Reader.init_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.init_reader">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the reader hardware</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if initialization was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Reader.read">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.read">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a card</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Card: The card that was read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Reader.read_raw">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.read_raw">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read raw data from the reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Reader.write_xml">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.write_xml">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write reader configuration to XML</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filename: Path to the XML file</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if write was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Reader.to_dict">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert reader configuration to a dictionary</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Dictionary representation of the reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;interface&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
+            <span class="s1">&#39;readable_tracks&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="p">}</span></div>
+
+    
+<div class="viewcode-block" id="Reader.from_dict">
+<a class="viewcode-back" href="../modules/reader.html#reader.Reader.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a reader from a dictionary</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: Dictionary containing reader configuration</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Reader: A new Reader instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reader_class</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">reader_class</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown reader type: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">reader_class</span><span class="p">()</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">interface</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;interface&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">readable_tracks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readable_tracks&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="n">reader</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DirectReader">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DirectReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Direct hardware reader (parallel/gameport)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="DirectReader.__init__">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cp</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">clk1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">clk2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">clk3</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data3</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new DirectReader instance</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            port: Port number</span>
+<span class="sd">            cp: Clock pin</span>
+<span class="sd">            clk1: Clock pin for track 1</span>
+<span class="sd">            data1: Data pin for track 1</span>
+<span class="sd">            clk2: Clock pin for track 2</span>
+<span class="sd">            data2: Data pin for track 2</span>
+<span class="sd">            clk3: Clock pin for track 3</span>
+<span class="sd">            data3: Data pin for track 3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the parent class with a name</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;DirectReader&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uses_cp</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cp</span> <span class="o">=</span> <span class="n">cp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clk1</span> <span class="o">=</span> <span class="n">clk1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data1</span> <span class="o">=</span> <span class="n">data1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clk2</span> <span class="o">=</span> <span class="n">clk2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data2</span> <span class="o">=</span> <span class="n">data2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clk3</span> <span class="o">=</span> <span class="n">clk3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data3</span> <span class="o">=</span> <span class="n">data3</span></div>
+
+    
+<div class="viewcode-block" id="DirectReader.init_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader.init_reader">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the direct reader hardware</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if initialization was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Implementation would initialize the hardware here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="DirectReader.read">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a card using the direct reader</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Card: The card that was read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">card</span><span class="w"> </span><span class="kn">import</span> <span class="n">Card</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">track</span><span class="w"> </span><span class="kn">import</span> <span class="n">Track</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_reader</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Reader not initialized&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># This is a placeholder - actual implementation would read from hardware</span>
+        <span class="n">card</span> <span class="o">=</span> <span class="n">Card</span><span class="p">()</span>
+        
+        <span class="c1"># Example: Simulate reading track 1</span>
+        <span class="k">if</span> <span class="mi">1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="p">:</span>
+            <span class="n">track_data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;%B1234567890123456^CARDHOLDER/NAME^25121010000000000000000000000000000?&quot;</span>
+            <span class="n">track</span> <span class="o">=</span> <span class="n">Track</span><span class="p">(</span><span class="n">track_data</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">track_data</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">card</span><span class="o">.</span><span class="n">add_track</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">card</span></div>
+
+    
+<div class="viewcode-block" id="DirectReader.read_raw">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader.read_raw">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read raw data from the direct reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_reader</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Reader not initialized&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Implementation would read raw data from hardware</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw reading not implemented for DirectReader&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="DirectReader.write_xml">
+<a class="viewcode-back" href="../modules/reader.html#reader.DirectReader.write_xml">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write reader configuration to XML</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filename: Path to the XML file</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if write was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;reader&quot;</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;direct&quot;</span><span class="p">)</span>
+        
+        <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+        <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;uses_cp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uses_cp</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        
+        <span class="c1"># Add track configurations</span>
+        <span class="n">tracks</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;tracks&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">clk</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clk1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clk2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data2</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clk3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data3</span><span class="p">)</span>
+        <span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">track_elem</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">tracks</span><span class="p">,</span> <span class="s2">&quot;track&quot;</span><span class="p">)</span>
+            <span class="n">track_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">track_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;clock_pin&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">clk</span><span class="p">))</span>
+            <span class="n">track_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;data_pin&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        
+        <span class="c1"># Write to file</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error writing XML: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SerialReader">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SerialReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serial port based card reader</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="SerialReader.__init__">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new SerialReader instance</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            device: Path to the serial device (e.g., /dev/ttyS0 or COM1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the parent class with a name</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;SerialReader&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_handle</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_cr</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># CR flag for some readers</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.set_device">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.set_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the serial device path</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            device: Path to the serial device</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.set_cr_flag">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.set_cr_flag">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_cr_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the CR flag</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            flag: Value for the CR flag</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_cr</span> <span class="o">=</span> <span class="n">flag</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.init_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.init_reader">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the serial reader</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if initialization was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No device specified&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># This would be implemented to open the serial port</span>
+            <span class="c1"># For now, we&#39;ll just check if the device exists</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+                
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
+            
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing serial reader: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.read">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a card using the serial reader</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Card: The card that was read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">card</span><span class="w"> </span><span class="kn">import</span> <span class="n">Card</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">track</span><span class="w"> </span><span class="kn">import</span> <span class="n">Track</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_reader</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Reader not initialized&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># This is a placeholder - actual implementation would read from serial port</span>
+        <span class="n">card</span> <span class="o">=</span> <span class="n">Card</span><span class="p">()</span>
+        
+        <span class="c1"># Example: Simulate reading track 2</span>
+        <span class="k">if</span> <span class="mi">2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readable_tracks</span><span class="p">:</span>
+            <span class="n">track_data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;;1234567890123456=25121010000000000?&quot;</span>
+            <span class="n">track</span> <span class="o">=</span> <span class="n">Track</span><span class="p">(</span><span class="n">track_data</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">track_data</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">card</span><span class="o">.</span><span class="n">add_track</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">card</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.read_raw">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.read_raw">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read raw data from the serial reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_reader</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Reader not initialized&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Implementation would read raw data from serial port</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw reading not implemented for SerialReader&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="SerialReader.write_xml">
+<a class="viewcode-back" href="../modules/reader.html#reader.SerialReader.write_xml">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write reader configuration to XML</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filename: Path to the XML file</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if write was successful</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;reader&quot;</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;serial&quot;</span><span class="p">)</span>
+        
+        <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;flag_cr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flag_cr</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        
+        <span class="c1"># Write to file</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error writing XML: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="load_config">
+<a class="viewcode-back" href="../modules/reader.html#reader.load_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="n">config_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Reader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a reader configuration from an XML file</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        config_file: Path to the XML configuration file</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Reader: A configured Reader instance</span>
+<span class="sd">        </span>
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If the config file doesn&#39;t exist</span>
+<span class="sd">        ValueError: If the config file is invalid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config_file</span><span class="p">):</span>
+        <span class="c1"># Default configuration if file doesn&#39;t exist</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">DirectReader</span><span class="p">()</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_can_read_track</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Default to track 1</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_can_read_track</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># and track 2</span>
+        <span class="k">return</span> <span class="n">reader</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        
+        <span class="n">reader_type</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;direct&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        
+        <span class="c1"># Map of reader types to their factory functions</span>
+        <span class="n">reader_factories</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;direct&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">_create_direct_reader</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">root</span><span class="p">),</span>
+            <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">_create_serial_reader</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">root</span><span class="p">),</span>
+            <span class="s1">&#39;msr605&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">_create_msr605_reader</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span> <span class="n">reader_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reader_factories</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown reader type: </span><span class="si">{</span><span class="n">reader_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="c1"># Create the reader using the appropriate factory function</span>
+        <span class="k">if</span> <span class="n">reader_type</span> <span class="o">==</span> <span class="s1">&#39;msr605&#39;</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">_create_msr605_reader</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">reader_factories</span><span class="p">[</span><span class="n">reader_type</span><span class="p">](</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+        
+        <span class="c1"># Parse readable tracks if specified</span>
+        <span class="n">tracks_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;tracks&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tracks_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">track_elem</span> <span class="ow">in</span> <span class="n">tracks_elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;track&quot;</span><span class="p">):</span>
+                <span class="n">track_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">track_elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">track_elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;readable&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+                    <span class="n">reader</span><span class="o">.</span><span class="n">set_can_read_track</span><span class="p">(</span><span class="n">track_num</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">reader</span>
+                
+    <span class="k">except</span> <span class="n">ET</span><span class="o">.</span><span class="n">ParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid XML in config file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading config: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_create_direct_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader._create_direct_reader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_direct_reader</span><span class="p">(</span><span class="n">attrib</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DirectReader&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a DirectReader instance from XML configuration&quot;&quot;&quot;</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">DirectReader</span><span class="p">()</span>
+    
+    <span class="c1"># Parse port and CP</span>
+    <span class="n">port_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">port_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">port_elem</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">port_str</span> <span class="o">=</span> <span class="n">port_elem</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">port_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">):</span>
+            <span class="c1"># Handle hexadecimal port numbers</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port_str</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Handle decimal port numbers</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port_str</span><span class="p">)</span>
+        
+    <span class="n">uses_cp_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;uses_cp&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">uses_cp_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">uses_cp</span> <span class="o">=</span> <span class="n">uses_cp_elem</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+    
+    <span class="c1"># Parse tracks</span>
+    <span class="n">tracks_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;tracks&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tracks_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">track_elem</span> <span class="ow">in</span> <span class="n">tracks_elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;track&quot;</span><span class="p">):</span>
+            <span class="n">track_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">track_elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">))</span>
+            <span class="n">clock_pin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">track_elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clock_pin&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+            <span class="n">data_pin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">track_elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_pin&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+            
+            <span class="c1"># Set the appropriate pins based on track number</span>
+            <span class="k">if</span> <span class="n">track_num</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">clk1</span> <span class="o">=</span> <span class="n">clock_pin</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">data1</span> <span class="o">=</span> <span class="n">data_pin</span>
+            <span class="k">elif</span> <span class="n">track_num</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">clk2</span> <span class="o">=</span> <span class="n">clock_pin</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">data2</span> <span class="o">=</span> <span class="n">data_pin</span>
+            <span class="k">elif</span> <span class="n">track_num</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">clk3</span> <span class="o">=</span> <span class="n">clock_pin</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">data3</span> <span class="o">=</span> <span class="n">data_pin</span>
+    
+    <span class="k">return</span> <span class="n">reader</span></div>
+
+
+
+<div class="viewcode-block" id="_create_serial_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader._create_serial_reader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_serial_reader</span><span class="p">(</span><span class="n">attrib</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SerialReader&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a SerialReader instance from XML configuration&quot;&quot;&quot;</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">device_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">device_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">device_elem</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">SerialReader</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Parse CR flag if specified</span>
+    <span class="n">flag_cr_elem</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;flag_cr&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">flag_cr_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">flag_cr</span> <span class="o">=</span> <span class="n">flag_cr_elem</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+    
+    <span class="k">return</span> <span class="n">reader</span></div>
+
+
+
+<div class="viewcode-block" id="_create_msr605_reader">
+<a class="viewcode-back" href="../modules/reader.html#reader._create_msr605_reader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_msr605_reader</span><span class="p">(</span><span class="n">attrib</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;MSR605Reader&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an MSR605Reader instance from XML configuration&quot;&quot;&quot;</span>
+    <span class="n">device_path</span> <span class="o">=</span> <span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;device_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">MSR605Reader</span><span class="p">(</span><span class="n">device_path</span> <span class="k">if</span> <span class="n">device_path</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reader</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Nsfr750.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

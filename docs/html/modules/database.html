@@ -1,0 +1,1037 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>database &mdash; PySnoop 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pysnoop_gui" href="pysnoop_gui.html" />
+    <link rel="prev" title="reader" href="reader.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySnoop
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">PySnoop Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#building-the-documentation">Building the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#viewing-the-documentation">Viewing the Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-via-pip">Install via pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#launching-the-application">Launching the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#connecting-a-card-reader">Connecting a Card Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#reading-a-card">Reading a Card</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validating-card-numbers">Validating Card Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#managing-card-database">Managing Card Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">PySnoop Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html#core-modules">Core Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pysnoop.html">pysnoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="card.html">card</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reader.html">reader</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#gui-modules">GUI Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysnoop_gui.html">pysnoop_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mod10_gui.html">mod10_gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="menu.html">menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html">about</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ssflags.html">ssflags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version.html">version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#core-modules">Core Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#gui-modules">GUI Modules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api.html#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/api.html#pysnoop.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing to PySnoop</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#code-review-process">Code Review Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#id2">Unreleased</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#fixed">Fixed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySnoop</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">PySnoop Modules</a></li>
+      <li class="breadcrumb-item active">database</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-database">
+<span id="database"></span><span id="database-module"></span><h1>database<a class="headerlink" href="#module-database" title="Link to this heading"></a></h1>
+<p>Database package for Stripe Snoop - contains card test implementations and database functionality.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="database.CardStorage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">CardStorage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles persistent storage of card data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the card storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> – Path to the database file. If None, uses default location.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage._load">
+<span class="sig-name descname"><span class="pre">_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage._load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage._load" title="Link to this definition"></a></dt>
+<dd><p>Load cards from the database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage._save">
+<span class="sig-name descname"><span class="pre">_save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage._save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage._save" title="Link to this definition"></a></dt>
+<dd><p>Save cards to the database file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage.add_card">
+<span class="sig-name descname"><span class="pre">add_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage.add_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage.add_card" title="Link to this definition"></a></dt>
+<dd><p>Add a new card to the storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card_data</strong> – Dictionary containing card data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage.get_all_cards">
+<span class="sig-name descname"><span class="pre">get_all_cards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage.get_all_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage.get_all_cards" title="Link to this definition"></a></dt>
+<dd><p>Get all stored cards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of card dictionaries</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardStorage.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/card_storage.html#CardStorage.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardStorage.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear all stored cards.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.TestResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">TestResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unknowns:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags:</span> <span class="pre">~typing.List[~typing.Tuple[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_tags:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/test_result.html#TestResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores the results of a card test, including any information found in the card database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unknowns:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags:</span> <span class="pre">~typing.List[~typing.Tuple[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_tags:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#database.TestResult.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.add_extra_tag">
+<span class="sig-name descname"><span class="pre">add_extra_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.add_extra_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.add_extra_tag" title="Link to this definition"></a></dt>
+<dd><p>Add an extra tag to the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> – The tag to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.add_tag">
+<span class="sig-name descname"><span class="pre">add_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.add_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.add_tag" title="Link to this definition"></a></dt>
+<dd><p>Add a name-value tag to the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the tag</p></li>
+<li><p><strong>value</strong> – The value of the tag</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.card_type">
+<span class="sig-name descname"><span class="pre">card_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#database.TestResult.card_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Create a TestResult from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Dictionary containing test result data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new TestResult instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_card_type">
+<span class="sig-name descname"><span class="pre">get_card_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_card_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_card_type" title="Link to this definition"></a></dt>
+<dd><p>Get the card type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_data_tag">
+<span class="sig-name descname"><span class="pre">get_data_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_data_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_data_tag" title="Link to this definition"></a></dt>
+<dd><p>Get the value of a tag by index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – The index of the tag</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tag value, or empty string if index is out of range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_extra_tag">
+<span class="sig-name descname"><span class="pre">get_extra_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_extra_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_extra_tag" title="Link to this definition"></a></dt>
+<dd><p>Get an extra tag by index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – The index of the extra tag</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extra tag, or empty string if index is out of range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_name_tag">
+<span class="sig-name descname"><span class="pre">get_name_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_name_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_name_tag" title="Link to this definition"></a></dt>
+<dd><p>Get the name of a tag by index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – The index of the tag</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tag name, or empty string if index is out of range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_notes">
+<span class="sig-name descname"><span class="pre">get_notes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_notes" title="Link to this definition"></a></dt>
+<dd><p>Get the notes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_num_extra_tags">
+<span class="sig-name descname"><span class="pre">get_num_extra_tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_num_extra_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_num_extra_tags" title="Link to this definition"></a></dt>
+<dd><p>Get the number of extra tags.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_num_tags">
+<span class="sig-name descname"><span class="pre">get_num_tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_num_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_num_tags" title="Link to this definition"></a></dt>
+<dd><p>Get the number of name-value tags.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.get_unknowns">
+<span class="sig-name descname"><span class="pre">get_unknowns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.get_unknowns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.get_unknowns" title="Link to this definition"></a></dt>
+<dd><p>Get any unknown fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.is_valid">
+<span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.is_valid" title="Link to this definition"></a></dt>
+<dd><p>Check if the test result is valid.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.notes">
+<span class="sig-name descname"><span class="pre">notes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#database.TestResult.notes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.set_card_type">
+<span class="sig-name descname"><span class="pre">set_card_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.set_card_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.set_card_type" title="Link to this definition"></a></dt>
+<dd><p>Set the card type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.set_notes">
+<span class="sig-name descname"><span class="pre">set_notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.set_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.set_notes" title="Link to this definition"></a></dt>
+<dd><p>Set the notes for this result.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.set_unknowns">
+<span class="sig-name descname"><span class="pre">set_unknowns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unknowns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.set_unknowns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.set_unknowns" title="Link to this definition"></a></dt>
+<dd><p>Set any unknown fields found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.TestResult.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/test_result.html#TestResult.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.TestResult.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the test result to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary representation of the test result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.unknowns">
+<span class="sig-name descname"><span class="pre">unknowns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#database.TestResult.unknowns" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#database.TestResult.valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#database.TestResult.tags" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="database.TestResult.extra_tags">
+<span class="sig-name descname"><span class="pre">extra_tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#database.TestResult.extra_tags" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.GenericTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">GenericTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for all card tests.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.GenericTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the test with required tracks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.GenericTest.add_required_track">
+<span class="sig-name descname"><span class="pre">add_required_track</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest.add_required_track"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest.add_required_track" title="Link to this definition"></a></dt>
+<dd><p>Add a required track for this test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>track_num</strong> – The track number that is required</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.GenericTest.meets_requirements">
+<span class="sig-name descname"><span class="pre">meets_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest.meets_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest.meets_requirements" title="Link to this definition"></a></dt>
+<dd><p>Check if the card meets the requirements for this test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if requirements are met, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.GenericTest.run_test">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the test on the given card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.GenericTest.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/card_tests.html#GenericTest.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.GenericTest.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the test to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the test</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.VisaTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">VisaTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#VisaTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.VisaTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for Visa credit/debit cards.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.VisaTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#VisaTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.VisaTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Visa test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.VisaTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#VisaTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.VisaTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the Visa card test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.MastercardTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">MastercardTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#MastercardTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.MastercardTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for Mastercard credit/debit cards.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.MastercardTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#MastercardTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.MastercardTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Mastercard test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.MastercardTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#MastercardTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.MastercardTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the Mastercard test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">EnhancedCardDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Enhanced card database with secure storage capabilities.</p>
+<p>This class provides methods to manage a collection of card data
+with encryption for sensitive information like card numbers,
+expiration dates, and track data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – Optional path to save/load the database</p></li>
+<li><p><strong>password</strong> – Optional password for encryption</p></li>
+<li><p><strong>salt</strong> – Optional salt for key derivation (must provide when loading an existing database)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.add_card">
+<span class="sig-name descname"><span class="pre">add_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.add_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.add_card" title="Link to this definition"></a></dt>
+<dd><p>Add a card to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card_data</strong> – Dictionary containing card information</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if card was added successfully, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.export_to_bytes">
+<span class="sig-name descname"><span class="pre">export_to_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.export_to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.export_to_bytes" title="Link to this definition"></a></dt>
+<dd><p>Export the database to bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized database data</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.export_to_csv">
+<span class="sig-name descname"><span class="pre">export_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.export_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.export_to_csv" title="Link to this definition"></a></dt>
+<dd><p>Export the database to a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – Path to save the CSV file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if export was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.export_to_json">
+<span class="sig-name descname"><span class="pre">export_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.export_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.export_to_json" title="Link to this definition"></a></dt>
+<dd><p>Export the database to a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – Path to save the JSON file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if export was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.get_card">
+<span class="sig-name descname"><span class="pre">get_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.get_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.get_card" title="Link to this definition"></a></dt>
+<dd><p>Get a card by index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Index of the card to retrieve</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The card data or None if not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[Dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.import_from_bytes">
+<span class="sig-name descname"><span class="pre">import_from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.import_from_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.import_from_bytes" title="Link to this definition"></a></dt>
+<dd><p>Import database from bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Bytes containing the database data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if import was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.load_from_file">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.EnhancedCardDatabase" title="database.enhanced_database.EnhancedCardDatabase"><span class="pre">EnhancedCardDatabase</span></a></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.load_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.load_from_file" title="Link to this definition"></a></dt>
+<dd><p>Load a database from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – Path to the database file</p></li>
+<li><p><strong>password</strong> – Optional password if the database is encrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new instance with loaded data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.EnhancedCardDatabase" title="database.EnhancedCardDatabase">EnhancedCardDatabase</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the file doesn’t exist</p></li>
+<li><p><strong>ValueError</strong> – If the file format is invalid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.remove_card">
+<span class="sig-name descname"><span class="pre">remove_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.remove_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.remove_card" title="Link to this definition"></a></dt>
+<dd><p>Remove a card from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Index of the card to remove</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if card was removed, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.save_to_file">
+<span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.save_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.save_to_file" title="Link to this definition"></a></dt>
+<dd><p>Save the database to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – Optional path to save the file (uses instance path if not provided)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if save was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.EnhancedCardDatabase.search_cards">
+<span class="sig-name descname"><span class="pre">search_cards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/enhanced_database.html#EnhancedCardDatabase.search_cards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.EnhancedCardDatabase.search_cards" title="Link to this definition"></a></dt>
+<dd><p>Search for cards matching a search term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>search_term</strong> – Term to search for in card data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of matching cards</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.AmericanExpressTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">AmericanExpressTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#AmericanExpressTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.AmericanExpressTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for American Express credit cards.
+American Express cards start with 34 or 37 and are 15 digits long.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.AmericanExpressTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#AmericanExpressTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.AmericanExpressTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the American Express test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.AmericanExpressTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#AmericanExpressTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.AmericanExpressTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the American Express card test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.DiscoverTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">DiscoverTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#DiscoverTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DiscoverTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for Discover credit cards.
+Discover card numbers start with 6011, 644-649, or 65 and are 16 digits long.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.DiscoverTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#DiscoverTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DiscoverTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Discover test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.DiscoverTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#DiscoverTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DiscoverTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the Discover card test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.JCBCreditTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">JCBCreditTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#JCBCreditTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.JCBCreditTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for JCB credit cards.
+JCB card numbers start with 3528-3589 and are 16 digits long.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.JCBCreditTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#JCBCreditTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.JCBCreditTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the JCB test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.JCBCreditTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#JCBCreditTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.JCBCreditTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the JCB card test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.DinersClubTest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">DinersClubTest</span></span><a class="reference internal" href="../_modules/database/card_tests.html#DinersClubTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DinersClubTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTest</span></code></a></p>
+<p>Test for Diners Club credit cards.
+Diners Club card numbers start with 300-305, 36, or 38-39 and are 14 digits long.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.DinersClubTest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/card_tests.html#DinersClubTest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DinersClubTest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Diners Club test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.DinersClubTest.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/card_tests.html#DinersClubTest.run_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.DinersClubTest.run_test" title="Link to this definition"></a></dt>
+<dd><p>Run the Diners Club card test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The test results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="database.CardDatabase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">database.</span></span><span class="sig-name descname"><span class="pre">CardDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><span class="pre">GenericTest</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/database.html#CardDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages all card tests and runs them against swiped cards.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><span class="pre">GenericTest</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the card database with the specified test classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test_classes</strong> – Optional list of test classes to use. If None, uses all available tests.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.add_test">
+<span class="sig-name descname"><span class="pre">add_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#database.GenericTest" title="database.card_tests.GenericTest"><span class="pre">GenericTest</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.add_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.add_test" title="Link to this definition"></a></dt>
+<dd><p>Add a test to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test</strong> – The test to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.CardDatabase" title="database.database.CardDatabase"><span class="pre">CardDatabase</span></a></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Create a CardDatabase from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Dictionary containing database data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new CardDatabase instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.get_available_tests">
+<span class="sig-name descname"><span class="pre">get_available_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.get_available_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.get_available_tests" title="Link to this definition"></a></dt>
+<dd><p>Get information about all available tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries containing test information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.load_default_tests">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_default_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.CardDatabase" title="database.database.CardDatabase"><span class="pre">CardDatabase</span></a></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.load_default_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.load_default_tests" title="Link to this definition"></a></dt>
+<dd><p>Load the default set of card tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A new CardDatabase with default tests</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.load_from_directory">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.CardDatabase" title="database.database.CardDatabase"><span class="pre">CardDatabase</span></a></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.load_from_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.load_from_directory" title="Link to this definition"></a></dt>
+<dd><p>Load card tests from a directory of Python modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> – Path to the directory containing test modules</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new CardDatabase with tests from the directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.load_from_file">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.CardDatabase" title="database.database.CardDatabase"><span class="pre">CardDatabase</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.load_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.load_from_file" title="Link to this definition"></a></dt>
+<dd><p>Load a database from a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – Path to the input file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new CardDatabase instance, or None if loading failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.run_tests">
+<span class="sig-name descname"><span class="pre">run_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#database.TestResult" title="database.test_result.TestResult"><span class="pre">TestResult</span></a></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.run_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.run_tests" title="Link to this definition"></a></dt>
+<dd><p>Run all tests against the given card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>card</strong> – The card to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The first valid test result, or an invalid result if no tests matched</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#database.TestResult" title="database.TestResult">TestResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.save_to_file">
+<span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.save_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.save_to_file" title="Link to this definition"></a></dt>
+<dd><p>Save the database to a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – Path to the output file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if save was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="database.CardDatabase.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/database/database.html#CardDatabase.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.CardDatabase.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the database to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the database</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reader.html" class="btn btn-neutral float-left" title="reader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pysnoop_gui.html" class="btn btn-neutral float-right" title="pysnoop_gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Nsfr750.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
