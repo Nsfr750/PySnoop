@@ -20,7 +20,7 @@ import serial.tools.list_ports
 
 # Import local modules
 from about import create_about_tab
-from menu import MenuBar, show_about, show_documentation, show_preferences
+from menu import MenuBar, show_about
 
 # Import core functionality
 from card import Card
@@ -839,9 +839,6 @@ class PySnoopGUI(tk.Tk):
         self.menu_bar.set_callback('file', 'save_as', self._save_database_as)
         self.menu_bar.set_callback('file', 'exit', self.on_closing)
         
-        # Edit menu
-        self.menu_bar.set_callback('edit', 'preferences', show_preferences)
-        
         # View menu
         self.menu_bar.set_callback('view', 'zoom_in', self._zoom_in)
         self.menu_bar.set_callback('view', 'zoom_out', self._zoom_out)
@@ -849,8 +846,7 @@ class PySnoopGUI(tk.Tk):
         
         # Help menu
         self.menu_bar.set_callback('help', 'about', show_about)
-        self.menu_bar.set_callback('help', 'documentation', show_documentation)
-    
+
     def _new_database(self):
         """Create a new database."""
         if messagebox.askyesno(

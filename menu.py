@@ -41,8 +41,7 @@ class MenuBar(tk.Menu):
                 'reset_zoom': None
             },
             'help': {
-                'about': None,
-                'documentation': None
+                'about': None
             }
         }
         
@@ -123,12 +122,6 @@ class MenuBar(tk.Menu):
         help_menu = tk.Menu(self, tearoff=0)
         
         help_menu.add_command(
-            label="Documentation",
-            accelerator="F1",
-            command=lambda: self._trigger_callback('help', 'documentation')
-        )
-        help_menu.add_separator()
-        help_menu.add_command(
             label="About PySnoop",
             command=lambda: self._trigger_callback('help', 'about')
         )
@@ -183,14 +176,3 @@ def show_about():
         command=about_win.destroy
     )
     close_btn.pack(side=tk.RIGHT)
-
-
-def show_documentation():
-    """Open the documentation in the default web browser."""
-    import webbrowser
-    webbrowser.open("http://github.com/Nsfr750/PySnoop/docs/")
-
-
-def show_preferences():
-    """Show the preferences dialog."""
-    messagebox.showinfo("Preferences", "Preferences dialog will be implemented here.")

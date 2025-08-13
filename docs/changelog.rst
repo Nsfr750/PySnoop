@@ -5,7 +5,7 @@ Changelog
 
 All notable changes to PySnoop will be documented in this file.
 
-`Unreleased <https://github.com/Nsfr750/PySnoop/compare/v1.0.0...main>`_
+`Unreleased <https://github.com/Nsfr750/PySnoop/compare/v2.0.0...main>`_
 -----------------------------------------------------------------------
 
 Added
