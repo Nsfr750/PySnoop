@@ -13,6 +13,8 @@ A modern Python-based application for reading, writing, and analyzing magnetic s
 - **Multiple Formats**: Export/Import card data in various formats
 - **Modern GUI**: User-friendly interface with theming support
 - **Cross-Platform**: Works on Windows, macOS, and Linux
+- **Standalone Executable**: Build as a single executable file for easy distribution
+- **Debug Builds**: Special debug configuration for troubleshooting
 - **Security**: Secure storage for sensitive card data
 - **Validation**: Built-in card number validation (C10/Luhn)
 - **Documentation**: Comprehensive documentation and examples
@@ -48,6 +50,36 @@ A modern Python-based application for reading, writing, and analyzing magnetic s
 
 3. Install dependencies:
 
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 🏗️ Building the Application
+
+PySnoop can be built into a standalone executable using Nuitka. We provide two build scripts:
+
+### Debug Build
+
+```bash
+.\snoop_debug.bat
+```
+
+This creates a debug version of the application with the console window enabled for troubleshooting.
+
+### Release Build
+
+```bash
+.\snoop.bat
+```
+
+This creates an optimized release version of the application.
+
+### Build Outputs
+
+- Debug build: `build\PySnoop_debug.exe`
+- Release build: `build\PySnoop.exe`
+
+## 🛠️ Development
    ```bash
    pip install -r requirements.txt
    ```

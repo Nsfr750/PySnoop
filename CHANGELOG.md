@@ -5,9 +5,28 @@ All notable changes to the PySnoop project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2025-08-13
 
 ### Added
+- Build system improvements with Nuitka
+- Support for standalone executable builds
+- Debug build configuration
+- Automated dependency management
+- Enhanced build documentation
+
+### Changed
+- Updated build scripts for better cross-platform compatibility
+- Improved error handling in build process
+- Optimized build performance
+- Simplified build configuration
+
+### Fixed
+- Resolved issues with ttkthemes packaging
+- Fixed build errors related to missing dependencies
+- Addressed issues with data file inclusion
+- Fixed console window behavior in release builds
+
+## [1.5.0] - 2025-05-30
 
 - Comprehensive documentation with Sphinx
 - Automated testing framework with pytest
@@ -28,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resolved database concurrency problems
 - Addressed security vulnerabilities in data handling
 
-## [2.0.0] - 2025-05-30
+## [1.1.0] - 2025-05-30
 
 ### Added
 
