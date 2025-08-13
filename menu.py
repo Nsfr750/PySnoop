@@ -188,7 +188,7 @@ def show_about():
 def show_documentation():
     """Open the documentation in the default web browser."""
     import webbrowser
-    webbrowser.open("http://github.com/Nsfr750/Pysnoop/docs/html/index.html")
+    webbrowser.open("http://github.com/Nsfr750/PySnoop/docs/")
 
 
 def show_preferences():
