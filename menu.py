@@ -48,7 +48,6 @@ class MenuBar(tk.Menu):
         
         # Create menus
         self._create_file_menu()
-        self._create_edit_menu()
         self._create_view_menu()
         self._create_help_menu()
     
@@ -96,18 +95,6 @@ class MenuBar(tk.Menu):
         )
         
         self.add_cascade(label="File", menu=file_menu)
-    
-    def _create_edit_menu(self):
-        """Create the Edit menu."""
-        edit_menu = tk.Menu(self, tearoff=0)
-        
-        edit_menu.add_command(
-            label="Preferences",
-            accelerator="Ctrl+,",
-            command=lambda: self._trigger_callback('edit', 'preferences')
-        )
-        
-        self.add_cascade(label="Edit", menu=edit_menu)
     
     def _create_view_menu(self):
         """Create the View menu."""
@@ -201,7 +188,7 @@ def show_about():
 def show_documentation():
     """Open the documentation in the default web browser."""
     import webbrowser
-    webbrowser.open("http://tuxxle.ddns.net/pysnoop/docs")
+    webbrowser.open("http://github.com/Nsfr750/Pysnoop/docs/build/html/index.html")
 
 
 def show_preferences():
